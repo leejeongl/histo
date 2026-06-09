@@ -1,0 +1,2768 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histologija & Anatomija - Slagalica Kviz</title>
+    <style>
+        :root {
+            --slagalica-blue-dark: #0f2042;
+            --slagalica-blue-light: #1e3c72;
+            --slagalica-gold: #ffd700;
+            --slagalica-gold-hover: #ffea70;
+            --correct-green: #2ecc71;
+            --wrong-red: #e74c3c;
+            --card-front: #2a5298;
+            --card-back: #122548;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--slagalica-blue-dark) 0%, var(--slagalica-blue-light) 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(15, 32, 66, 0.85);
+            border: 3px solid var(--slagalica-gold);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: var(--slagalica-gold);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #bdc3c7;
+            margin-bottom: 30px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-main {
+            background: linear-gradient(to bottom, var(--slagalica-gold) 0%, #d4af37 100%);
+            color: var(--slagalica-blue-dark);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(to bottom, var(--slagalica-gold-hover) 0%, var(--slagalica-gold) 100%);
+        }
+
+        .btn-sub {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-sub:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* KVIZ STILOVI */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255,215,0,0.3);
+            padding-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            text-align: left;
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-left: 5px solid var(--slagalica-gold);
+            border-radius: 4px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        @media(min-width: 600px) {
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #4a69bd;
+            color: white;
+            padding: 15px;
+            font-size: 1.1rem;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:hover {
+            background: rgba(74, 105, 189, 0.3);
+            border-color: var(--slagalica-gold);
+        }
+
+        .option-prefix {
+            font-weight: bold;
+            color: var(--slagalica-gold);
+            margin-right: 12px;
+            background: rgba(0,0,0,0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-green) !important;
+            border-color: #27ae60 !important;
+            color: white;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background-color: var(--wrong-red) !important;
+            border-color: #c0392b !important;
+            color: white;
+        }
+
+        .explanation-box {
+            background: rgba(46, 204, 113, 0.15);
+            border: 2px solid var(--correct-green);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .explanation-title {
+            color: var(--correct-green);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .action-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+
+        .btn-nav {
+            background: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-nav:hover {
+            background: #4b6584;
+        }
+
+        /* FLEŠKARTICE STILOVI */
+        .flashcard-wrapper {
+            perspective: 1000px;
+            width: 100%;
+            height: 350px;
+            margin: 20px auto;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,215,0,0.2);
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, var(--card-front) 0%, var(--slagalica-blue-light) 100%);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, var(--card-back) 0%, var(--slagalica-blue-dark) 100%);
+            transform: rotateY(180deg);
+            border-color: var(--slagalica-gold);
+        }
+
+        .card-label {
+            position: absolute;
+            top: 15px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--slagalica-gold);
+        }
+
+        .card-content {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+
+        .hint-click {
+            position: absolute;
+            bottom: 15px;
+            font-size: 0.8rem;
+            color: #a4b0be;
+            font-style: italic;
+        }
+
+        .card-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-card-status {
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .btn-again { background-color: var(--wrong-red); }
+        .btn-good { background-color: var(--correct-green); }
+
+        /* UPRAVLJANJE UVOZOM */
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: 1px solid var(--slagalica-gold);
+            padding: 10px;
+            border-radius: 6px;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-container">
+        <div id="home-screen">
+            <h1>Slagalica Znanja</h1>
+            <p class="subtitle" id="database-info">Učitano: 50 histoloških pitanja i kartica</p>
+            <div class="menu-buttons">
+                <button class="btn-main" onclick="startModule('quiz')">💡 Pokreni Kviz Znanja</button>
+                <button class="btn-main" onclick="startModule('cards')">🎴 Pokreni Fleškartice</button>
+                <button class="btn-sub" onclick="toggleImportArea()">⚙️ Uvezi preostala pitanja (JSON)</button>
+            </div>
+
+            <div id="import-area" class="hidden">
+                <p style="margin-top:15px; font-size:0.9rem; color:#bdc3c7;">Nalepite novi paket pitanja u JSON formatu ispod:</p>
+                <textarea id="json-input" placeholder='[{"question": "Tekst...", "options": ["a", "b", "c", "d"], "correct": 0, "explanation": "..."}]'></textarea>
+                <button class="btn-main" style="padding: 8px 15px; font-size: 1rem; margin-top: 10px;" onclick="importQuestions()">Dodaj u bazu</button>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <div class="quiz-header">
+                <span id="quiz-progress">Pitanje 1 od X</span>
+                <span id="quiz-score" style="color: var(--slagalica-gold); font-weight: bold;">Poeni: 0</span>
+            </div>
+            <div id="quiz-body">
+                <div class="question-text" id="question-placeholder">Tekst...</div>
+                <div class="options-grid" id="options-placeholder"></div>
+                <div class="explanation-box hidden" id="explanation-placeholder">
+                    <div class="explanation-title">📝 Objašnjenje:</div>
+                    <div id="explanation-text">Objašnjenje...</div>
+                </div>
+            </div>
+            <div class="action-container">
+                <button class="btn-nav" onclick="exitToHome()">🏠 Meni</button>
+                <button class="btn-nav hidden" id="btn-next-question" onclick="nextQuestion()">Sledeće ➡️</button>
+            </div>
+        </div>
+
+        <div id="cards-screen" class="hidden">
+            <div class="quiz-header">
+                <span id="cards-progress">Kartica 1 od X</span>
+                <span id="cards-learned" style="color: var(--correct-green);">Naučeno: 0</span>
+            </div>
+            
+            <div class="flashcard-wrapper">
+                <div class="flashcard" id="main-card" onclick="flipCard()">
+                    <div class="card-face card-front">
+                        <div class="card-label">Pitanje</div>
+                        <div class="card-content" id="card-front-text">Tekst...</div>
+                        <div class="hint-click">Klikni da okreneš 🔄</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="card-label">Tačan Odgovor & Objašnjenje</div>
+                        <div class="card-content" id="card-back-text">Odgovor...</div>
+                        <div class="hint-click">Klikni da okreneš nazad 🔄</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-controls hidden" id="card-controls-box">
+                <button class="btn-card-status btn-again" onclick="handleCardStatus(false)">❌ Ponovi</button>
+                <button class="btn-card-status btn-good" onclick="handleCardStatus(true)">✅ Naučeno</button>
+            </div>
+            
+            <div class="action-container" style="margin-top: 15px;">
+                <button class="btn-nav" onclick="exitToHome()">🏠 Meni</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <h1>Kraj sesije!</h1>
+            <p class="subtitle" id="result-message">Završeno.</p>
+            <div class="score-display" id="final-score-text">Rezultat: 100%</div>
+            <button class="btn-main" onclick="exitToHome()">Vrati se na početak</button>
+        </div>
+    </div>
+
+    <script>
+        // INTEGRISANA PITANJA (1-50) IZ SVIH OBLASTI CITOLOGIJE I EPITELA
+        let database = [
+            {question: "U grupu ćelija okruglog oblika spada:", options: ["multipolarni neuron", "peharasta ćelija", "jajna ćelija", "glatko-mišićna ćelija"], correct: 2, explanation: "Jajna ćelija je karakteristična po svom sferičnom obliku, dok su ostale navedene ćelije vretenaste, peharaste ili zvezdaste."},
+            {question: "Endotelne ćelije krvnih sudova spadaju u grupu:", options: ["kockastih ćelija", "okruglih ćelija", "cilindričnih ćelija", "pločastih ćelija"], correct: 3, explanation: "Endotel predstavlja jednoslojni ljuspast (pločast) epitel koji oblaže unutrašnjost cirkulatornog sistema."},
+            {question: "Plazmalema je:", options: ["inkluzija plazmocita", "ćelijska membrana", "jedarna membrana", "vezikula Golgy kompleksa najbliža jedru"], correct: 1, explanation: "Plazmalema je stručni sinonim za ćelijsku membranu (selektivno propustljivi omotač ćelije)."},
+            {question: "U sastav glikokaliksa ulaze:", options: ["glikoproteini i glikolipidi membrane", "samo lipidi", "proteini citoskeleta", "nukleoproteidi"], correct: 0, explanation: "Glikokaliks je spoljašnji sloj na plazmalemi građen od oligosaharidnih lanaca koji su kovalentno vezani za membranske lipide i proteine."},
+            {question: "Aktivni transport kroz membranu vrši se:", options: ["niz elektrohemijski gradijent", "uz utrošak energije (ATP) nasuprot gradijentu", "jednostavnom difuzijom gasova", "kroz jonske kanale bez energije"], correct: 1, explanation: "Primarni i sekundarni aktivni transport zahtevaju energiju u obliku ATP-a jer pomeraju jone/molekule uz njihov koncentracioni gradijent."},
+            {question: "Fagocitoza je proces:", options: ["izbacivanja tečnosti iz ćelije", "unošenja krupnih čvrstih čestica u ćeliju", "sinteze proteina na ribozomima", "replikacije DNK molekula"], correct: 1, explanation: "Fagocitoza predstavlja oblik endocitoze gde ćelije obuhvataju i unose krupne čestice ili mikroorganizme."},
+            {question: "Ribozomi su organele na kojima se vrši:", options: ["sinteza lipida", "sinteza proteina", "oksidativna fosforilacija", "intracelularna digestija"], correct: 1, explanation: "Ribozomi prevode informaciju sa iRNK i povezuju amino-kiseline u polipeptidne lance, odnosno vrše sintezu proteina."},
+            {question: "Granulisani endoplazmatični retikulum (gEPR) je mesto sinteze:", options: ["steroidnih hormona", "glikogena", "proteina namenjenih izvozu ili membranama", "masnih kiselina"], correct: 2, explanation: "Prisustvo ribozoma na membranama gEPR-a omogućava sintezu sekretornih proteina, lizozomskih enzima i integralnih proteina membrane."},
+            {question: "Glatki endoplazmatični retikulum (aEPR) intenzivno je razvijen u ćelijama koje sintetišu:", options: ["enzime za varenje", "steroidne hormone i lipide", "kolagen", "hemoglobin"], correct: 1, explanation: "aEPR učestvuje u biosintezi lipida, fosfolipida i steroida, kao i u detoksikaciji lekova/otrova."},
+            {question: "Golgi aparat primarno služi za:", options: ["stvaranje ATP-a", "modifikaciju, sortiranje i pakovanje proteina", "replikaciju genoma", "transkripciju RNK"], correct: 1, explanation: "U Golgi aparatu se vrši terminalna glikozilacija, sulfatacija i pakovanje makromolekula u sekretorne vezikule ili lizozome."},
+            {question: "Primarni lizozomi sadrže:", options: ["kristale holesterola", "kisele hidrolitičke enzime", "pigment lipofuscin", "delove mitohondrija predodređene za uništenje"], correct: 1, explanation: "Lizozomi su rezervoari više od 40 vrsta kiselih hidrolaza koje služe za razgradnju makromolekula."},
+            {question: "Mitohondrije su glavno mesto:", options: ["sinteze glukoze", "stvaranja energije u obliku ATP kroz krepsov ciklus i respiratorni lanac", "sinteze masnih kiselina", "razgradnje hidrogen-peroksida"], correct: 1, explanation: "Zbog svoje uloge u ćelijskom disanju i sintezi ATP-a putem oksidativne fosforilacije, mitohondrije se nazivaju elektranama ćelije."},
+            {question: "Koji citoskeletni elementi grade mitotsko vreteno tokom deljenja ćelije?", options: ["mikrofilamenti", "intermedijarna vlakna", "mikrotubule", "keratinska vlakna"], correct: 2, explanation: "Mitotsko deobno vreteno čine niti mikrotubula koje se polimerizuju iz centrozoma i vezuju za kinetohore hromozoma."},
+            {question: "U nukleolusu (jedarcetu) se odvija:", options: ["replikacija DNK", "sinteza rRNK i sklapanje podjedinica ribozoma", "sinteza glikoproteina", "pakovanje lipida"], correct: 1, explanation: "Nukleolus je subnuklearna struktura zadužena za transkripciju ribozomske RNK i rano organizovanje ribozomskih podjedinica."},
+            {question: "Hromatinska vlakna predstavljaju kompleks:", options: ["DNK molekula i histonskih proteina", "RNK i lipida", "glikogena i aktina", "tubulina i miozina"], correct: 0, explanation: "Hromatin je kompleks naslednog materijala (DNK) i proteina (histona i nehistonskih struktura)."},
+            {question: "Tokom koje faze ćelijskog ciklusa se odvija replikacija (dupliranje) DNK?", options: ["G1 faza", "S faza", "G2 faza", "M faza (mitoza)"], correct: 1, explanation: "S faza interfaze rezervisana je za replikaciju DNK hromozoma, tako da ćelija ulazi u G2 fazu sa dupliranom količinom genetskog materijala."},
+            {question: "Jednoslojni pločasti epitel nalazi se u:", options: ["sluzokoži želuca", "endotelu krvnih sudova i mezotelu telesnih duplji", "epidermisu kože", "znojnim žlezdama"], correct: 1, explanation: "Jednoslojni pločasti epitel obezbeđuje minimalnu barijeru pogodnu za brzu difuziju gasova i tečnosti."},
+            {question: "Jednoslojni visokoprizmatični (cilindrični) epitel sa mikroresicama karakterističan je za:", options: ["sluzokožu tankog i debelog creva", "usnu duplju", "mokraćnu bešiku", "kožu"], correct: 0, explanation: "Enterociti creva imaju izražen visokoprizmatični oblik sa četkastom ivicom (mikroresicama) koja višestruko povećava apsorpcionu površinu."},
+            {question: "Višeredan cilindrični epitel sa trepljama (respiratorni epitel) oblaže:", options: ["jednjak", "traheju i primarne bronhije", "ureter", "kožu kapka"], correct: 1, explanation: "Respiratorni epitel izgleda višeslojno jer su jedra u različitim nivoima, ali sve ćelije dodiruju bazalnu laminu. Treplje služe za čišćenje disajnih puteva."},
+            {question: "Mokraćni trakt (bešiku, uretere) oblaže specifičan epitel koji menja izgled pri rastezanju:", options: ["pločasto-slojeviti sa orožavanjem", "prelazni epitel (urotel)", "jednoslojni kockasti", "višeredan kockasti"], correct: 1, explanation: "Urotel poseduje površinske 'kišobran' ćelije koje se mogu spljoštiti kada se organ napuni tečnošću, štiteći dublje slojeve."},
+            {question: "Koji međućelijski spoj potpuno opasuje ćeliju i sprečava prolazak molekula paracelularnim putem?", options: ["desmozom", "zonula occludens (tesni spoj)", "nexus (gap junction)", "hemidesmozom"], correct: 1, explanation: "Zonula occludens (tight junction) stvara nepropusnu barijeru fuzijom spoljašnjih slojeva membrana susednih epitelnih ćelija."},
+            {question: "Glavni protein u ekstracelularnom matriksu vezivnog tkiva koji daje visoku otpornost na istezanje je:", options: ["elastin", "kolagen", "laminin", "fibrilin"], correct: 1, explanation: "Kolagen tipa I je najzastupljeniji protein u telu koji formira debela vlakna izuzetne zatezne čvrstine."},
+            {question: "Rezidentne ćelije rastresitog vezivnog tkiva zadužene za sintezu kolagena i osnovne materije su:", options: ["makrofagi", "plazmociti", "fibroblasti", "mastociti"], correct: 2, explanation: "Fibroblasti su metabolički najaktivnije stalne ćelije vezivnog tkiva koje produkuju vlakna i ekstracelularni matriks."},
+            {question: "Plazma ćelije (plazmociti) nastaju od B-limfocita i diferenciraju se za funkciju:", options: ["fagocitoze bakterija", "lučenja histamina", "sinteze i sekrecije antitela (imunoglobulina)", "deponovanja masti"], correct: 2, explanation: "Plazmociti imaju karakteristično ekscentrično postavljeno jedro sa hromatinom u obliku 'paoka točka' i masivno razvijen gEPR za masovnu produkciju antitela."},
+            {question: "Mastociti u svojim granulama sadrže preformisane medijatore zapaljenja:", options: ["kolagen i elastin", "histamin i heparin", "hemoglobin", "antitela"], correct: 1, explanation: "Histamin izaziva vazodilataciju i povećanu propustljivost kapilara, što dovodi do lokalne alergijske ili inflamatorne reakcije."},
+            {question: "Hijalina hrskavica NE poseduje krvne sudove, a njena ishrana se obavlja:", options: ["preko nervnih vlakana", "difuzijom iz perihondrijuma i sinovijalne tečnosti", "direktno iz koštane srži", "aktivnim transportom eritrocita"], correct: 1, explanation: "Pošto je avaskularna, hrskavica zavisi od difuzije hranljivih materija kroz visoko hidratisani ekstracelularni matriks bogat agrekanom."},
+            {question: "Koji tip kolagena dominira u matriksu hijaline hrskavice?", options: ["Kolagen tip I", "Kolagen tip II", "Kolagen tip III", "Kolagen tip IV"], correct: 1, explanation: "Kolagen tipa II formira finu trodimenzionalnu mrežu fibrila unutar hijalnog matriksa, pružajući strukturni okvir."},
+            {question: "Osteoblasti su ćelije koštane srži i tkiva koje:", options: ["razgrađuju koštani matriks", "sintetišu organski deo koštanog matriksa (osteoid)", "služe kao mehanoreceptori u lakunama", "krvne ćelije"], correct: 1, explanation: "Osteoblasti su aktivne ćelije kuboidnog oblika koje luče kolagen tip I i glikoproteine koštanog matriksa, a potom iniciraju njegovu mineralizaciju."},
+            {question: "Osteoklasti su krupne, višejadarne ćelije koje nastaju fuzijom monocita i služe za:", options: ["stvaranje nova kost", "resorpciju (razgradnju) koštanog tkiva", "sintezu kalcijuma", "održavanje osteona"], correct: 1, explanation: "Osteoklasti stvaraju 'nabranu ivicu' i luče kisele hidrolaze i protone u Howship-ovim lakunama, razgrađujući i mineralni i organski deo kosti."},
+            {question: "Osnovna strukturna i funkcionalna jedinica kompaktne kosti je:", options: ["osteocit", "osteon (Haverzov sistem)", "Volkmanov kanal", "trabekula"], correct: 1, explanation: "Osteon se sastoji od centralnog Haverzovog kanala sa krvnim sudovima, oko kojeg su koncentrično poređane koštane lamele sa osteocitima."},
+            {question: "Sarkomera, osnovna kontraktilna jedinica poprečno-prugastog mišića, definisana je kao prostor između dve:", options: ["A-pruge", "I-pruge", "Z-linije", "M-linije"], correct: 2, explanation: "Sarkomera se proteže od jedne do druge Z-linije (Z-diska) i sadrži precizno raspoređene tanke (aktinske) i debele (miozinske) filamente."},
+            {question: "Za pokretanje kontrakcije poprečno-prugastog mišića neophodno je vezivanje jona kalcijuma za:", options: ["miozinsku glavu", "troponin C", "tropomiozin", "aktin"], correct: 1, explanation: "Vezivanjem kalcijuma za troponin C menja se konformacija troponinskog kompleksa, što pomera tropomiozin i otkriva mesta na aktinu."},
+            {question: "Glatko mišićno tkivo odlikuje se:", options: ["višejadarnim cilindričnim ćelijama sa prugama", "vretenastim ćelijama sa jednim centralnim jedrom bez poprečne isproganosti", "razvijenim T-tubulima", "voljnom kontrolom pokreta"], correct: 1, explanation: "Glatki mišići nemaju sarkomere i poprečnu isproganost. Aktinski i miozinski filamenti se vezuju za gusta tela (dense bodies) u citoplazmi."},
+            {question: "Nervne ćelije (neuroni) primaju impulse od drugih ćelija preko:", options: ["aksona", "dendrita", "mjelinskog omotača", "Ranvijerovih suženja"], correct: 1, explanation: "Dendriti su kratki, razgranati nastavci neurona specijalizovani za prijem signala i njihovo provođenje ka telu ćelije (perikarionu)."},
+            {question: "Mjelinski omotač aksona u perifernom nervnom sistemu (PNS) formiraju:", options: ["oligodendrociti", "Švanove (Schwann) ćelije", "astrociti", "mikroglija"], correct: 1, explanation: "Švanove ćelije obmotavaju periferna nervna vlakna praveći mjelinski omotač koji omogućava brzo provođenje impulsa."},
+            {question: "Najveće neuroglijalne ćelije CNS-a koje učestvuju u formiranju krvno-moždane barijere su:", options: ["mikroglija", "astrociti", "ependimske ćelije", "oligodendrociti"], correct: 1, explanation: "Astrociti svojim vaskularnim stopalima obmotavaju kapilare u mozgu, kontrolišući lokalni metabolizam i formirajući selektivnu barijeru."},
+            {question: "Koji epitel oblaže konjuktivu oka:", options: ["jednoredan ljuspasti", "višeredan kockasti", "pločasto-slojeviti bez orožavanja", "pločasto-slojeviti sa orožavanjem"], correct: 2, explanation: "Konjuktiva oka je zaštićena pločasto-slojevitim epitelom bez orožavanja, koji se vlaži sekretom suznih i specifičnih mukoznih žlezda."},
+            {question: "Mejbomove žlezde locirane u očnom kapku su:", options: ["klasične znojne žlezde", "lojne žlezde", "modifikovane znojne žlezde", "modifikovane lojne žlezde"], correct: 3, explanation: "Mejbomove žlezde su razgranate alveolarne modifikovane lojne žlezde koje luče lipidni sloj suznog filma, sprečavajući isparavanje suza."},
+            {question: "Retikularni sloj dermisa kože karakteriše:", options: ["rastresito vezivno tkivo sa mnogo ćelija", "obilje masnog tkiva", "gusto neformirano vezivno tkivo sa manje ćelija i više debelih kolagenih vlakana", "odsustvo krvnih sudova"], correct: 2, explanation: "Retikularni sloj dermisa pruža koži čvrstinu i elastičnost zahvaljujući gustim prepletima kolagenih vlakana tipa I."},
+            {question: "U nekeratinocite epidermisa spadaju:", options: ["mioepitelne ćelije i serociti", "melanociti, Langerhansove ćelije i Merkelove ćelije", "fibroblasti i mastociti", "samo adipociti"], correct: 1, explanation: "Ove ćelije imaju specifična porekla: melanociti (pigmentacija), Langerhansove (imunost) i Merkelove (mehanorecepcija)."},
+            {question: "Bazalna lamina je struktura na kojoj počiva:", options: ["nervna ćelija", "epitelno tkivo", "slobodni makrofag", "eritrocit"], correct: 1, explanation: "Bazalna lamina je vanćelijski sloj koji odvaja epitel od podležećeg vezivnog tkiva i pruža strukturnu potporu."},
+            {question: "Peharaste ćelije su primer:", options: ["jednocrtačnih tubularnih žlezda", "višecelularnih razgranatih žlezda", "jednocelularnih intraepitelnih žlezda", "endokrinih žlezda"], correct: 2, explanation: "Peharaste ćelije su modifikovane cilindrične ćelije koje samostalno sintetišu i luče sluz (mucin) direktno na površinu epitela."},
+            {question: "Mioepitelne ćelije imaju ulogu u:", options: ["kontrakciji srca", "istiskivanju sekreta iz sekretornih jedinica egzokrinih žlezda", "prenošenju nervnog impulsa", "stvaranju kolagena"], correct: 1, explanation: "Smeštene su između epitelnih ćelija i bazalne lamine u pljuvačnim, mlečnim i znojnim žlezdama i svojom kontrakcijom pomažu sekreciju."},
+            {question: "Serociti su ćelije koje produkuju sekret bogat:", options: ["lipidima", "sluzima (ugljenim hidratima)", "proteinima (enzimima)", "steroidima"], correct: 2, explanation: "Serociti imaju piramidalan oblik, jako razvijen gEPR i sekretorne granule na apeksu pune proteinskih medijatora."},
+            {question: "U pseudovrelo (višeredno) epitelno tkivo spadaju ćelije:", options: ["koje su sve iste visine", "čija jedra leže u različitim nivoima ali sve dodiruju bazalnu laminu", "koje nemaju dodir sa bazalnom laminom", "koje se lako ljušte sa površine"], correct: 1, explanation: "Zbog različite visine ćelija jedra su u više redova što daje privid višeslojnosti, iako je epitel zapravo jednoslojan."},
+            {question: "Kojoj grupi kolagena pripada kolagen koji izgrađuje bazalnu laminu?", options: ["Tip I", "Tip II", "Tip III", "Tip IV"], correct: 3, explanation: "Kolagen tipa IV ne formira vlakna već specifičnu trodimenzionalnu mrežu (rešetku) koja je osnova bazalne lamine."},
+            {question: "Karakteristika neorožalog pločasto-slojevitog epitela je da površinske ćelije:", options: ["gube jedra i pune se keratinom", "zadržavaju jedra i ostaju žive", "postaju cilindrične", "luče velike količine masti"], correct: 1, explanation: "Za razliku od orožalog (koža), ovaj epitel (npr. u jednjaku i usnoj duplji) ostaje vlažan i površinske ćelije su metabolički aktivne."},
+            {question: "Mikroresice (microvilli) na apikalnoj površini služe primarno za:", options: ["pokretanje sluzi", "povećanje apsorpcione površine ćelije", "odbranu od bakterija", "registrovanje svetlosti"], correct: 1, explanation: "Mikroresice su nepokretni prstoliki izvrati plazmaleme koji sadrže aktinske filamente i dramatično uvećavaju površinu za resorpciju."},
+            {question: "Treplje (cilia) se od mikroresica razlikuju po tome što:", options: ["su kraće i nepokretne", "sadrže mikrotubule u aksonemi (9x2+2) i aktivno su pokretne", "nemaju membranu", "građene su od keratina"], correct: 1, explanation: "Treplje vrše koordinisane talasaste pokrete zahvaljujući motornom proteinu dineinu i pomeraju sadržaj preko površine epitela."},
+            {question: "U endotelne strukture ne spada unutrašnji sloj:", options: ["aorte", "kapilara", "srčanih komora", "epidermisa"], correct: 3, explanation: "Epidermis je građen od epitela kože, dok je endotel naziv isključivo za jednoslojni pločasti epitel kardiovaskularnog sistema."},
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "question": "Koje su osnovne ćelije koštanog tkiva koje su potpuno okružene mineralizovanim matriksom i leže unutar koštanih šupljina (lakuna)?",
+    "options": ["Osteoblasti", "Osteociti", "Osteoklasti", "Hondrociti"],
+    "correct": 1,
+    "explanation": "Osteociti su zrele koštane ćelije. Oni komuniciraju sa susednim ćelijama preko dugih citoplazmatskih produžetaka koji prolaze kroz koštane kanaliće (canaliculi ossei)."
+  },
+  {
+    "question": "Koje ćelije koštanog tkiva aktivno sintetišu organski deo koštanog matriksa (osteoid) i nalaze se u vidu epitelsko-sličnog niza na površini kosti koja raste?",
+    "options": ["Osteoblasti", "Osteociti", "Osteoklasti", "Fibroblasti"],
+    "correct": 0,
+    "explanation": "Osteoblasti su graditelji kosti. Kada završe sintezu matriksa i ostanu zarobljeni u njemu, transformišu se u osteocite."
+  },
+  {
+    "question": "Osteoklasti su krupne, višenuklearne ćelije sa talasastom (četkastom) ivicom. Koja je njihova funkcija?",
+    "options": ["Stvaranje koštane mase", "Resorpcija i razgradnja koštanog tkiva (remodelovanje kosti)", "Sinteza kolagena II", "Skladištenje masti"],
+    "correct": 1,
+    "explanation": "Osteoklasti potiču iz linije monocita/makrofaga. Luče kiseline i hidrolitičke enzime koji rastvaraju mineralni i organski matriks kosti."
+  },
+  {
+    "question": "Osnovna strukturna i funkcionalna jedinica kompaktne kosti, građena od koncentričnih koštanih lamela postavljenih oko centralnog krvnog suda, naziva se:",
+    "options": ["Osteon (Haversov sistem)", "Volkmanov kanal", "Izogena grupa", "Lakuna"],
+    "correct": 0,
+    "explanation": "Osteon obezbeđuje visoku mehaničku otpornost kompaktne kosti. Kroz njegov centralni (Haversov) kanal prolaze krvni sudovi i nervi."
+  },
+  {
+    "question": "Kako se nazivaju poprečni ili kosi kanali kroz koje krvni sudovi iz periosta prodiru u unutrašnjost kosti i spajaju Haversove kanale?",
+    "options": ["Haversovi kanali", "Volkmanovi (Volkmann) kanali", "Koštani kanalići", "Osteocitni kanali"],
+    "correct": 1,
+    "explanation": "Volkmanovi kanali nisu okruženi koncentričnim lamelama, već presecaju koštane lamele upravno ili koso, omogućavajući vaskularnu komunikaciju."
+  },
+  {
+    "question": "Vezivni omotač koji pokriva spoljašnju površinu kosti, a sadrži spoljašnji fibrozni i unutrašnji osteogeni sloj sa matičnim ćelijama, naziva se:",
+    "options": ["Endost", "Periost (pokoosnica)", "Perihondrijum", "Kapsula"],
+    "correct": 1,
+    "explanation": "Periost je bogato inervisan i vaskularizovan. Njegov unutrašnji sloj sadrži osteoprogetitorske ćelije koje omogućavaju rast kosti u debljinu."
+  },
+  {
+    "question": "Koji tip okoštavanja (osifikacije) se odvija direktno unutar zgušnjavanja mezenhimskog tkiva bez prethodnog formiranja hrskavičavog modela (npr. pljosnate kosti lobanje)?",
+    "options": ["Intramembransko (dezmalno) okoštavanje", "Endohondralno okoštavanje", "Hondralno okoštavanje", "Intersticijalno okoštavanje"],
+    "correct": 0,
+    "explanation": "Dezmalno okoštavanje karakteriše direktna diferencijacija mezenhimskih ćelija u osteoblaste koji počinju da luče koštani matriks."
+  },
+  {
+    "question": "Kod endohondralnog okoštavanja (razvića dugih kostiju), koštano tkivo zamenjuje prethodno formirani model građen od koje strukture?",
+    "options": ["Vezivnog tkiva", "Hijaline hrskavice", "Elastične hrskavice", "Masnog tkiva"],
+    "correct": 1,
+    "explanation": "Većina kostiju tela razvija se endohondralno. Prvo se stvara minijaturni model od hijaline hrskavice koji postepeno degradira i biva zamenjen koštanim tkivom."
+  },
+  {
+    "question": "Gde se u dugim kostima tokom rasta nalazi zona epifizne hrskavice (ploha rasta) koja omogućava rast kosti u dužinu?",
+    "options": ["Na samoj zglobnoj površini", "Između epifize i dijafize (u metafiži)", "Unutar medularne šupljine", "U Haversovom kanalu"],
+    "correct": 1,
+    "explanation": "Epifizna ploča rasta sadrži zone proliferacije, hipertrofije i kalcifikacije hondrocita. Kada ova hrskavica potpuno okošta u mladosti, rast u dužinu prestaje."
+  },
+  {
+    "question": "Koji organ ili struktura predstavlja tečno vezivno tkivo zatvoreno unutar kardiovaskularnog sistema?",
+    "options": ["Limfa", "Krv (sanguis)", "LIKVOR", "Intersticijalna tečnost"],
+    "correct": 1,
+    "explanation": "Krv se sastoji od uobličenih elemenata (ćelija) suspendovanih u tečnom ekstracelularnom matriksu koji se naziva krvna plazma."
+  },
+  {
+    "question": "Koji je najbrojniji tip uobličenih elemenata krvi, nemaju jedro ni organele kod čoveka, a ispunjeni su hemoglobinom?",
+    "options": ["Leukociti", "Eritrociti (crvena krvna zrnca)", "Trombociti", "Monociti"],
+    "correct": 1,
+    "explanation": "Eritrociti imaju oblik bikonveksnog diska što im daje maksimalnu površinu za razmenu gasova (kiseonika i ugljen-dioksida)."
+  },
+  {
+    "question": "How do we call young, immature erythrocytes that have just left the bone marrow and still contain remnants of ribosomal RNA visible by special staining?",
+    "options": ["Retikulociti", "Normoblasti", "Megakariociti", "Mielociti"],
+    "correct": 0,
+    "explanation": "Procenat retikulocita u perifernoj krvi (normalno oko 1%) važan je pokazatelj aktivnosti koštane srži u stvaranju novih eritrocita."
+  },
+  {
+    "question": "Koji leukociti su najbrojniji među belim krvnim zrncima (50-70%), imaju segmentisano jedro (3-5 režnjeva) i prvi stižu na mesto bakterijske infekcije?",
+    "options": ["Eozinofilni granulociti", "Neutrofilni granulociti", "Bazofilni granulociti", "Limfociti"],
+    "correct": 1,
+    "explanation": "Neutrofili su mikrofagi. Oni intenzivno fagocituju bakterije, a njihovo masovno propadanje na mestu infekcije formira gnoj."
+  },
+  {
+    "question": "Koji granulociti imaju dvorežnjevito jedro i krupne acidofilne (ružičasto-crvene) granule, a broj im skače kod parazitskih infekcija i alergijskih stanja?",
+    "options": ["Neutrofili", "Eozinofili", "Bazofili", "Monociti"],
+    "correct": 1,
+    "explanation": "Eozinofili luče toksične proteine koji oštećuju zid parazita (crva) i učestvuju u neutralizaciji histamina tokom alergijskih reakcija."
+  },
+  {
+    "question": "Koji su najređi granulociti u perifernoj krvi (manje od 1%), imaju jedro u obliku slova S koje je često pokriveno krupnim, tamno-plavim granulama bogatim histaminom i heparinom?",
+    "options": ["Neutrofili", "Eozinofili", "Bazofili", "Limfociti"],
+    "correct": 2,
+    "explanation": "Bazofili su strukturno i funkcionalno veoma slični mastocitima vezivnog tkiva i učestvuju u sistemskim alergijskim reakcijama."
+  },
+  {
+    "question": "U agranulocite (leukocite bez specifičnih granula u citoplazmi) spadaju:",
+    "options": ["Neutrofili i eozinofili", "Limfociti i monociti", "Bazofili i trombociti", "Eritrociti i plazmociti"],
+    "correct": 1,
+    "explanation": "Agranulociti nemaju specifične, već samo nespecifične (azurofilne) granule (lizozome). To su limfociti i monociti."
+  },
+  {
+    "question": "Koji leukociti imaju krupno, okruglo jedro koje zauzima skoro celu ćeliju i ključni su nosioci specifičnog imunskog odgovora organizma?",
+    "options": ["Monociti", "Limfociti", "Neutrofili", "Trombociti"],
+    "correct": 1,
+    "explanation": "Limfociti se dele na T-limfocite (ćelijski imunitet), B-limfocite (humoralni imunitet preko antitela) i NK ćelije."
+  },
+  {
+    "question": "Koji su najveći leukociti u perifernoj krvi, imaju jedro u obliku bubrega ili potkovice i pretvaraju se u makrofage nakon prelaska u tkiva?",
+    "options": ["Limfociti", "Monociti", "Eozinofili", "Bazofili"],
+    "correct": 1,
+    "explanation": "Monociti čine oko 3-8% leukocita. Imaju bledo-plavu citoplazmu i nakon migracije u tkiva postaju profesionalni fagociti."
+  },
+  {
+    "question": "Trombociti (krvne pločice) nemaju jedro jer predstavljaju citoplazmatske fragmente kojih krupnih ćelija koštane srži?",
+    "options": ["Megakariocita", "Mieloblasta", "Proeritroblasta", "Osteoklasta"],
+    "correct": 0,
+    "explanation": "Megakariociti pružaju produžetke u krvne sinuse koštane srži, gde se njihovi delovi otkidaju pod uticajem strujanja krvi i formiraju trombocite."
+  },
+  {
+    "question": "Koja je primarna uloga trombocita u fiziologiji krvotoka?",
+    "options": ["Prenos kiseonika", "Hemostaza (zaustavljanje krvarenja i formiranje krvnog ugruška)", "Odbrana od virusa", "Sinteza kolagena"],
+    "correct": 1,
+    "explanation": "Trombociti se agregiraju na mestu oštećenja krvnog suda, oslobađaju faktore koagulacije i formiraju primarni trombocitni čep."
+  },
+  {
+    "question": "Koje mišićno tkivo je građeno od dugih, cilindričnih ćelija sa stotinama jedara lociranih neposredno ispod plazmaleme (sarkoleme), a nalazi se pod kontrolom volje?",
+    "options": ["Glatko mišićno tkivo", "Skeletno poprečno-prugasto mišićno tkivo", "Srčano mišićno tkivo", "Mioepitelno tkivo"],
+    "correct": 1,
+    "explanation": "Skeletna mišićna vlakna nastaju fuzijom velikog broja embrionalnih mišićnih ćelija (mioblasta), formirajući sincicijum."
+  },
+  {
+    "question": "Karakteristična poprečna ispunjenost (prugavost) kod skeletnog mišića nastaje zbog visoko organizovanog rasporeda kojih struktura u citoplazmi?",
+    "options": ["Mikrotubula", "Miofibrila (aktinskih i miozinskih miofilamenata)", "Mitohondrija", "Granularnog endoplazmatskog retikuluma"],
+    "correct": 1,
+    "explanation": "Prugast izgled nastaje zbog naizmeničnog smenjivanja tamnih anizotropnih (A) i svetlih izotropnih (I) pruga duž miofibrila."
+  },
+  {
+    "question": "Osnovna strukturna i funkcionalna jedinica kontrakcije u poprečno-prugastom mišiću, locirana između dve susedne Z-linije, naziva se:",
+    "options": ["Sarkomera", "Sarkoplazma", "Sarkozom", "T-tubul"],
+    "correct": 0,
+    "explanation": "Sarkomera sadrži centralna debela (miozinska) vlakna i periferna tanka (aktinska) vlakna koja klize jedna između drugih tokom kontrakcije."
+  },
+  {
+    "question": "Koji specifični membranski invaginati sarkoleme (T-tubuli) imaju ulogu da prenesu akcioni potencijal (depolarizaciju) duboko u unutrašnjost mišićnog vlakna?",
+    "options": ["Sarkoplazmatski retikulum", "Transverzalni (T) tubuli", "Terminalne cisterne", "Miofibrili"],
+    "correct": 1,
+    "explanation": "T-tubuli omogućavaju istovremenu kontrakciju svih delova mišićnog vlakna jer dovode signal za oslobađanje kalcijuma direktno do sarkomera."
+  },
+  {
+    "question": "Triadu u skeletnom mišićnom vlaknu čine jedan T-tubul i:",
+    "options": ["Dve mitohondrije", "Dve terminalne cisterne sarkoplazmatskog retikuluma (rezervoari jona Ca2+)", "Dva miofibrila", "Dve Z-linije"],
+    "correct": 1,
+    "explanation": "Triade su locirane na prelazu između A i I pruge. Prenos impulsa niz T-tubul otvara kanale na cisternama, oslobađajući Ca2+ koji aktivira kontrakciju."
+  },
+  {
+    "question": "Srčano mišićno tkivo (textus muscularis cardiacus) građeno je od pojedinačnih ćelija (kardiomiocita). Preko kojih specifičnih struktura su ove ćelije čeono povezane?",
+    "options": ["Desmozoma", "Prelaznih ploča (disci intercalares)", "Neksusa", "Tesnih spojeva"],
+    "correct": 1,
+    "explanation": "Interkalatni diskovi sadrže desmozome (za mehaničko povezivanje) i neksuse (gap junctions) koji omogućavaju brz prelaz jona i sinhronizovan rad srca."
+  },
+  {
+    "question": "Gde se nalazi jedro u kardiomiocitima, za razliku od skeletnih mišićnih vlakana?",
+    "options": ["Na samoj periferiji ispod membrane", "U samom centru ćelije (najčešće jedno ili dva jedra)", "Srčane ćelije nemaju jedro", "Rasuto je u vidu fragmenata"],
+    "correct": 1,
+    "explanation": "Kardiomiociti su račvaste ćelije sa jednim centralno postavljenim jedrom, oko koga su locirane brojne mitohondrije i glikogen."
+  },
+  {
+    "question": "Koje mišićno tkivo je izgrađeno od vretenastih ćelija sa jednim centralnim jedrom, nema poprečnu prugavost i nalazi se u zidu šupljih unutrašnjih organa?",
+    "options": ["Skeletno mišićno tkivo", "Srčano mišićno tkivo", "Glatko mišićno tkivo", "Neuromišićno tkivo"],
+    "correct": 2,
+    "explanation": "Glatki mišići su pod kontrolom autonomnog nervnog sistema i hormona. Kontrakcija je spora, dugotrajna i ne podleže zamoru."
+  },
+  {
+    "question": "Pošto glatke mišićne ćelije nemaju organizovane sarkomere ni Z-linije, za šta su u njihovoj citoplazmi i na membrani fiksirani aktinski i miozinski filamenti?",
+    "options": ["Za T-tubule", "Za gusta telašca (dense bodies)", "Za mitohondrije", "Za lipidne kapljice"],
+    "correct": 1,
+    "explanation": "Gusta telašca sadrže alfa-aktinin i funkcionalni su ekvivalent Z-linija skeletnih mišića, omogućavajući prenos sile kontrakcije na celu ćeliju."
+  },
+  {
+    "question": "Koje su dve osnovne populacije ćelija koje izgrađuju nervno tkivo?",
+    "options": ["Fibroblasti i fibrociti", "Neuroni (nervne ćelije) i neuroglija (potporne ćelije)", "Astrociti i osteociti", "Senzorni i motorni neuroni"],
+    "correct": 1,
+    "explanation": "Neuroni su zaduženi za generisanje i prenos nervnih impulsa, dok neuroglija pruža metaboličku, strukturnu i imunsku podršku neuronima."
+  },
+  {
+    "question": "Kako se naziva telo nervne ćelije koje sadrži jedro i najveći deo organela, a predstavlja metabolički centar neurona?",
+    "options": ["Akson", "Dendrit", "Perikarion (soma)", "Sinapsa"],
+    "correct": 2,
+    "explanation": "Perikarion ili soma je telo neurona. Iz njega polaze produžeci (dendriti i akson) koji primaju i prenose nerve impulse."
+  },
+  {
+    "question": "Nislova (Nissl) telašca u citoplazmi neurona, koja se intenzivno boje bazofilnim bojama, strukturno predstavljaju:",
+    "options": ["Glatki endoplazmatski retikulum", "Snažno razvijen granularni endoplazmatski retikulum (RER) sa slobodnim ribozomima", "Nakupine glikogena", "Aparate Golđija"],
+    "correct": 1,
+    "explanation": "Nislova telašca (hromatofilna supstancija) svedoče o ekstremno visokoj sintezi proteina u neuronima, neophodnih za održavanje neurotransmitera."
+  },
+  {
+    "question": "Koji produžeci nervne ćelije su obično brojni, kratki, granaju se pod oštrim uglom i primarno služe za prihvatanje signala (impulsa) od drugih neurona?",
+    "options": ["Aksoni", "Dendriti", "Neuriti", "Mijelinski omotači"],
+    "correct": 1,
+    "explanation": "Dendriti provode impulse celulipetalno (prema telu ćelije) i njihova površina je često proširena dendritskim trnovima radi ostvarivanja sinapsi."
+  },
+  {
+    "question": "Akson (neurit) je uvek pojedinačan produžetak koji provodi impuls od tela ćelije (celulifugalno). Kako se naziva početni, suženi deo aksona gde nastaje akcioni potencijal?",
+    "options": ["Aksonalni brežuljak", "Telodendrion", "Sinaptički čvorić", "Ranvijerovo suženje"],
+    "correct": 0,
+    "explanation": "Aksonalni brežuljak (axon hillock) je mesto na telu ćelije sa koga polazi akson. Tu se sumiraju svi postsinaptički potencijali i donosi odluka o okidanju impulsa."
+  },
+  {
+    "question": "Prema morfološkoj podeli (broju produžetaka), neuroni koji imaju jedno telo i samo jedan produžetak koji se ubrzo deli na dva kraka (jedan periferni i jedan centralni) nazivaju se:",
+    "options": ["Multipolarni neuroni", "Bipolarni neuroni", "Pseudounipolarni neuroni", "Unipolarni neuroni"],
+    "correct": 2,
+    "explanation": "Pseudounipolarni neuroni se nalaze u spinalnim ganglionima. Periferni krak funkcioniše kao dendrit (receptor), a centralni ulazi u kičmenu moždinu kao akson."
+  },
+  {
+    "question": "Koji neuroni su najbrojniji u ljudskom telu, imaju jedan akson i više dendrita (npr. motorni neuroni kičmene moždine, piramidne ćelije kore velikog mozga)?",
+    "options": ["Unipolarni", "Bipolarni", "Pseudounipolarni", "Multipolarni neuroni"],
+    "correct": 3,
+    "explanation": "Multipolarni neuroni čine veliku većinu ćelija u centralnom nervnom sistemu i omogućavaju integraciju ogromnog broja informacija."
+  },
+  {
+    "question": "Koje su najveće ćelije neuroglije u centralnom nervnom sistemu, imaju zvezdast oblik i svojim vaskularnim stopalima obmotavaju kapilare formirajući krvno-moždanu barijeru?",
+    "options": ["Oligodendrociti", "Astrociti", "Mikroglija", "Ependimske ćelije"],
+    "correct": 1,
+    "explanation": "Astrociti pružaju strukturnu i metaboličku potporu neuronima, regulišu sastav jona u međucelularnom prostoru i učestvuju u odbrani i ožiljavanju."
+  },
+  {
+    "question": "Koje ćelije neuroglije u centralnom nervnom sistemu su zadužene za formiranje mijelinskog omotača oko aksona, pri čemu jedna ćelija može omotati delove više aksona?",
+    "options": ["Švanove (Schwann) ćelije", "Oligodendrociti", "Astrociti", "Mikroglija"],
+    "correct": 1,
+    "explanation": "Oligodendrociti formiraju mijelin u CNS-u, dok u perifernom nervnom sistemu tu ulogu imaju Švanove ćelije (gde jedna Švanova ćelija omotava samo jedan segment jednog aksona)."
+  },
+  {
+    "question": "Koje ćelije neuroglije imaju sposobnost fagocitoze, potiču iz koštane srži (monocitne linije) i predstavljaju imunski sistem unutar centralnog nervnog sistema?",
+    "options": ["Astrociti", "Oligodendrociti", "Ćelije mikroglije", "Ependimske ćelije"],
+    "correct": 2,
+    "explanation": "Mikroglija su najmanje glijalne ćelije. U slučaju povrede ili infekcije CNS-a, one se aktiviraju, postaju pokretne i fagocituju uzročnike i celularni detritus."
+  },
+  {
+    "question": "Koje ćelije oblažu moždane komore i centralni kanal kičmene moždine, imaju kockast ili cilindričan oblik i poseduju treplje na apikalnoj površini koje pomažu kretanje likvora?",
+    "options": ["Astrociti", "Ependimske ćelije", "Švanove ćelije", "Satelit ćelije"],
+    "correct": 1,
+    "explanation": "Ependimske ćelije formiraju jednoslojan epiteloidni sloj. Modifikovane ependimske ćelije u horoidnom pleksusu aktivno učestvuju u produkciji cerebrospinalne tečnosti (likvora)."
+  },
+  {
+    "question": "Kako se nazivaju mesta ogoljenog aksona, locirana između susednih segmenata mijelinskog omotača, koja omogućavaju brzo, skokovito (saltatorno) provođenje nervnog impulsa?",
+    "options": ["Ranvijerova (Ranvier) suženja", "Šmit-Lantermanove usekotine", "Sinaptičke pukotine", "Aksonalni čvorovi"],
+    "correct": 0,
+    "explanation": "Na Ranvijerovim suženjima koncentrisan je ogroman bio voltažno-zavisnih kanala za natrijum. Akcioni potencijal 'preskače' sa jednog suženja na sledeće, drastično ubrzajući prenos."
+  },
+  {
+    "question": "U hemijskoj sinapsi, neurotransmiteri se oslobađaju iz presinaptičkog završetka egzocitozom sinaptičkih vezikula. Koji joni moraju ući u završetak da bi stimulisali ovo oslobađanje?",
+    "options": ["Joni natrijuma (Na+)", "Joni kalijuma (K+)", "Joni kalcijuma (Ca2+)", "Joni hlora (Cl-)"],
+    "correct": 2,
+    "explanation": "Dolazak akcionog potencijala otvara voltažno-zavisne kalcijumske kanale. Ulazak Ca2+ pokreće kaskadu koja dovodi do fuzije vezikula sa presinaptičkom membranom."
+  },
+  {
+    "question": "Vezivni omotač koji okružuje ceo periferni nerv spolja, izgrađen od gustog neformiranog vezivnog tkiva, naziva se:",
+    "options": ["Endoneurijum", "Perineurijum", "Epineurijum", "Perimizijum"],
+    "correct": 2,
+    "explanation": "Epineurijum drži sve snopove nervnih vlakana na okupu. Perineurijum okružuje pojedinačne snopove (fascikuluse), a endoneurijum okružuje svako pojedinačno nervno vlakno."
+  },
+  {
+    "question": "Kora velikog mozga (cortex cerebri) ima specifičnu laminarnu organizaciju. Koliko histoloških slojeva ćelija se uočava u neokorteksu?",
+    "options": ["3 sloja", "4 sloja", "6 slojeva", "8 slojeva"],
+    "correct": 2,
+    "explanation": "Filogenetski najmlađi deo kore (neokorteks) građen je od 6 slojeva, među kojima dominiraju piramidne i zrnaste (granularne) ćelije."
+  },
+  {
+    "question": "Kora malog mozga (cortex cerebellum) sastoji se od tri karakteristična sloja. U kom sloju se nalaze džinovske, kruškolike ćelije čiji se raskošni dendriti granaju u molekularnom sloju?",
+    "options": ["Stratum moleculare", "Stratum granulosum", "Sloj Purkinjeovih ćelija (stratum purkinjense)", "Sloj piramidnih ćelija"],
+    "correct": 2,
+    "explanation": "Purkinjeove ćelije su jedini eferentni izlaz iz kore malog mozga. Njihovi aksoni šalju inhibitorne signale ka dubokim jedrima malog mozga."
+  },
+  {
+    "question": "Gde su locirana tela motornih neurona (alfa i gama motoneurona) unutar sive mase kičmene moždine?",
+    "options": ["U zadnjim rogovima (cornu posterius)", "U prednjim rogovima (cornu anterius)", "U bočnim rogovima", "U centralnom kanalu"],
+    "correct": 1,
+    "explanation": "Prednji rogovi sive mase kičmene moždine imaju motornu funkciju i sadrže krupne multipolarne neurone čiji aksoni napuštaju CNS kroz prednje korenove spinalnih nerva."
+  },
+  {
+    "question": "Zid velikih krvnih sudova sastoji se od tri sloja. Koji sloj je izgrađen od endotela i tankog subendotelnog vezivnog tkiva?",
+    "options": ["Tunica media", "Tunica adventitia", "Tunica intima", "Tunica muscularis"],
+    "correct": 2,
+    "explanation": "Tunica intima je unutrašnji sloj koji je u direktnom kontaktu sa krvlju. Glatka površina endotela sprečava spontanu koagulaciju krvi."
+  },
+  {
+    "question": "Krvni sudovi poput aorte i plućnog stabla, koji moraju da amortizuju visoke pritiske tokom sistole srca, pripadaju kojoj grupi arterija?",
+    "options": ["Mišićnim arterijama", "Arterijama elastičnog tipa (velike arterije)", "Arteriolama", "Kapilarima"],
+    "correct": 1,
+    "explanation": "U tunici mediji elastičnih arterija nalazi se 40-70 koncentričnih fenestriranih elastičnih membrana koje se šire tokom sistole i skupljaju tokom dijastole, gurajući krv napred."
+  },
+  {
+    "question": "Koji krvni sudovi se nazivaju 'otporni sudovi' (resistentni sudovi) jer regulišu sistemski krvni pritisak i usmeravaju krv u kapilarne mreže menjanjem tonusa glatkih mišića u svom zidu?",
+    "options": ["Arterije elastičnog tipa", "Arteriode", "Vene", "Velike šuplje vene"],
+    "correct": 1,
+    "explanation": "Arteriole imaju srazmerno debeo sloj glatkih mišića u tunici mediji. Pod uticajem simpatikusa, one menjaju promer i tako kontrolišu periferni otpor."
+  },
+  {
+    "question": "Koji tip kapilara je najrasprostranjeniji u telu (nalazi se u mišićima, plućima, vezivnom tkivu i CNS-u), a karakteriše ga neprekinut niz endotelnih ćelija i celovita bazalna lamina?",
+    "options": ["Fenestrirani kapilari", "Sinusoidni kapilari", "Kontinuirani kapilari", "Limfni kapilari"],
+    "correct": 2,
+    "explanation": "Kontinuirani kapilari omogućavaju strogo kontrolisanu razmenu materija, a njihove ćelije su često povezane tesnim spojevima (tight junctions)."
+  },
+  {
+    "question": "U kojim organima se nalaze fenestrirani kapilari (kapilari sa malim otvorima/porama na endotelnim ćelijama pokrivenim dijafragmom), gde je neophodan brz transport makromolekula?",
+    "options": ["U mišićima i kostima", "U endokrinim žlezdama, crevnim resicama i bubrežnim glomerulima", "U mozgu", "U tetivama"],
+    "correct": 1,
+    "explanation": "Fenestracije omogućavaju visok stepen propustljivosti za hormone i apsorbovane hranljive materije, kao i brzu filtraciju u bubrezima."
+  },
+  {
+    "question": "Sinusoidni kapilari (sinusoidi) imaju veoma širok, nepravilan lumen, diskontinuiran endotel i delimično ili potpuno odsutnu bazalnu laminu. Gde se oni nalaze?",
+    "options": ["U srcu i plućima", "U jetri, slezini i koštanoj srži", "U skeletalnim mišićima", "U koži"],
+    "correct": 1,
+    "explanation": "Široki otvori na sinusoidima omogućavaju prolaz celih ćelija (npr. novostvorenih krvnih ćelija u koštanoj srži) i direktan kontakt plazme sa hepatocitima u jetri."
+  },
+  {
+    "question": "Koja je glavna histološka razlika između vena i arterija na poprečnom preseku?",
+    "options": ["Vene imaju deblju tunicu mediju", "Arterije imaju kolabiran i nepravilan lumen", "Vene imaju tanku tunicu mediju, a najrazvijeniji sloj je tunica adventitia, lumen im je širi i često kolabiran", "Arterije sadrže zaliske"],
+    "correct": 2,
+    "explanation": "Zbog nižeg pritiska, vene imaju znatno manje glatkih mišića i elastičnih vlakana. Pored toga, vene srednjeg i malog kalibra poseduju zaliske (valvulae) koji sprečavaju retrogradni tok krvi."
+  },
+  {
+    "question": "Unutrašnji sloj zida srca (endokard), koji oblaže srčane šupljine i formira srčane zaliske, strukturno odgovara kom sloju krvnog suda?",
+    "options": ["Tunici intimi", "Tunici mediji", "Tunici adventitiji", "Perikardu"],
+    "correct": 0,
+    "explanation": "Endokard je građen od endotela i tankog sloja vezivnog tkva, i u direktnom je kontinuitetu sa intimom velikih krvnih sudova koji ulaze ili izlaze iz srca."
+  },
+  {
+    "question": "Masivni srednji sloj zida srca (miokard) izgrađen je od srčanog mišićnog tkiva. Koji kardiomiociti su modifikovani i specijalizovani za generisanje i sprovođenje impulsa (srčani krotitelj vremena)?",
+    "options": ["Radni kardiomiociti", "Provodni kardiomiociti (ćelije SA i AV čvora, Purkinjeova vlakna)", "Sekretorni kardiomiociti", "Miofibroblasti"],
+    "correct": 1,
+    "explanation": "Provodni sistem srca samostalno stvara ritam. Purkinjeova vlakna su krupnija od običnih kardiomiocita, bogata su glikogenom i imaju manje miofibrila periferno postavljenih."
+  },
+  {
+    "question": "Kako se nazivaju modifikovani kardiomiociti u pretkomorama srca koji luče natriuretični peptid (ANP) kao odgovor na rastezanje zida usled povišenog volumena krvi?",
+    "options": ["Purkinjeova vlakna", "Sekretorni (endokrini) kardiomiociti", "Pejsmejker ćelije", "Vezivne ćelije"],
+    "correct": 1,
+    "explanation": "ANP deluje na bubrege stimulišući izlučivanje natrijuma i vode (natriureza i diureza), čime direktno smanjuje volumen krvi i krvni pritisak."
+  },
+  {
+    "question": "Spoljašnji sloj zida srca (epikard) ujedno predstavlja koji sloj perikarda (srčane kese)?",
+    "options": ["Parijetalni list seroznog perikarda", "Visceralni list seroznog perikarda", "Fibrozni perikard", "Endomizijum"],
+    "correct": 1,
+    "explanation": "Epikard je obložen jednoslojnim pločastim epitelom (mezotelom) ispod koga se nalazi sloj masnog i rastresitog vezivnog tkiva u kome leže koronarne arterije."
+  },
+  {
+    "question": "Koji su primarni (centralni) limfoidni organi u kojima se vrši nastanak i sazrevanje (imunokompetencija) limfocita?",
+    "options": ["Slezina i limfni čvorovi", "Koštana srž i timus (grudna žlezda)", "Krajnici i Pajerove ploče", "Limfni sudovi"],
+    "correct": 1,
+    "explanation": "U koštanoj srži sazrevaju B-limfociti, dok pro-T limfociti prelaze u timus gde prolaze kroz rigoroznu selekciju i diferencijaciju u zrele T-limfocite."
+  },
+  {
+    "question": "Timus (grudna žlezda) je najaktivniji u detinjstvu, a nakon puberteta doživljava involuciju. Šta se dešava sa njegovim parenhimom tokom involucije?",
+    "options": ["Pretvara se u koštano tkivo", "Zamenjuje ga masno i vezivno tkivo (masna involucija)", "Transformiše se u endokrinu žlezdu", "Potpuno nestaje bez ikakvog ostatka"],
+    "correct": 1,
+    "explanation": "Iako dolazi do masne transformacije, timus zadržava minimalnu funkciju proizvodnje T-ćelija tokom celog života."
+  },
+  {
+    "question": "Šta čini strukturnu potporu (strmu) timusa, za razliku od drugih limfoidnih organa koji imaju mrežu retikularnih vlakana kolagena III?",
+    "options": ["Mreža fibroblasta", "Mreža epitelno-retikularnih ćelija (endodermalnog porekla)", "Hijalina hrskavica", "Gusti snopovi elastičnih vlakana"],
+    "correct": 1,
+    "explanation": "Epitelno-retikularne ćelije formiraju citoretikulum u kome sazrevaju T-limfociti (timociti) i luče hormone (timozin, timopoetin) koji regulišu njihovo sazrevanje."
+  },
+  {
+    "question": "U kom delu timusa (kori ili srži) se nalaze specifične koncentrične lamele spljoštenih epitelno-retikularnih ćelija poznate kao Hasalova (Hassall) telašca?",
+    "options": ["U kori timusa (cortex)", "U srži timusa (medulla)", "U kapsuli", "U septama"],
+    "correct": 1,
+    "explanation": "Hasalova telašca su jedinstven histološki marker srži timusa. Smatra se da izlučuju citokine koji učestvuju u diferencijaciji regulatornih T-limfocita."
+  },
+  {
+    "question": "Limfni čvorovi (nodi lymphatici) su raspoređeni duž limfnih sudova i filtriraju limfu. Kroz koje sudove limfa ULAZI u limfni čvor?",
+    "options": ["Eferentne limfne sudove", "Aferentne limfne sudove (na konveksnoj površini kapsule)", "Arteriole", "Kapilare na hilusu"],
+    "correct": 1,
+    "explanation": "Limfa ulazi kroz više aferentnih sudova, prolazi kroz sistem sinusa (subkapsularni, kortikalni, medularni) gde se filtrira, i napušta čvor kroz jedan ili dva eferentna suda na hilusu."
+  },
+  {
+    "question": "Gde su unutar limfnog čvora primarno organizovani B-limfociti u obliku limfnih čvorića (folikula)?",
+    "options": ["U parakorteksu", "U spoljašnjoj kori (cortex)", "U medularnim trakama", "U subkapsularnom sinusu"],
+    "correct": 1,
+    "explanation": "Kora limfnog čvora je B-zona. Primarni folikuli sadrže mirne B-ćelije, dok sekundarni folikuli imaju svetliji germinativni centar gde B-ćelije proliferišu nakon kontakta sa antigenom."
+  },
+  {
+    "question": "Koji organ obavlja limfoidnu funkciju ali je postavljen u krvotok, pa ne filtrira limfu već isključivo filtrira krv i uklanja stare eritrocite?",
+    "options": ["Timus", "Limfni čvor", "Slezina (splen / lien)", "Krajnik"],
+    "correct": 2,
+    "explanation": "Slezina je najveći limfoidni organ. Ona reaguje na antigene dospeli putem krvi i vrši destrukciju ostarelih crvenih krvnih zrnaca."
+  },
+  {
+    "question": "Digestivni trakt počinje usnom dupljom. Kojim je epitelom obložena sluzokoža usne duplje (obrazi, pod jezika, meko nepce) koja je izložena mehaničkom trenju?",
+    "options": ["Jednoslojnim cilindričnim", "Pločasto-slojevitim epitelom bez orožavanja", "Pločasto-slojevitim epitelom sa orožavanjem", "Prelaznim epitelom"],
+    "correct": 1,
+    "explanation": "Pločasto-slojeviti neorožali epitel štiti od povreda hranom. Međutim, na mestima intenzivnog trenja, kao što su desni i tvrdo nepce, epitel može biti delimično ili potpuno orožao."
+  },
+  {
+    "question": "Jezik je mišićni organ pokriven sluzokožom. Koje su najbrojnije papile na leđima jezika, imaju kupast oblik, nemaju gustativne (gustatorne) pupoljke i daju jeziku somotast izgled?",
+    "options": ["Pečurpaste papile (vv. fungiformes)", "Opšivene papile (vv. vallatae)", "Opkoljene papile", "Končaste papile (papillae filiformes)"],
+    "correct": 3,
+    "explanation": "Končaste papile su jedine papile bez uloge u osetu ukusa. One su delimično orožale i imaju isključivo mehaničku ulogu u pridržavanju i mlevenju hrane."
+  },
+  {
+    "question": "Gde su locirane najveće jezične papile (papillae vallatae, ima ih 8-12) koje su poređane u obliku slova V na granici korena i tela jezika i sadrže stotine gustativnih pupoljaka?",
+    "options": ["Na vrhu jezika", "Na bočnim ivicama", "Ispred sulkusa terminalisa (na bazi jezika)", "Ispod jezika"],
+    "correct": 2,
+    "explanation": "Ove papile su opkoljene dubokim žlebom u koji se otvaraju kanali von Ebnerovih seroznih žlezda. Njihov sekret ispira žleb, omogućavajući pupoljcima da primaju nove stimuluse ukusa."
+  },
+  {
+    "question": "Koja je osnovna supstanca koja čini najveći deo mase zuba, po sastavu je tvrđa od kosti (70% hidroksiapatit), a sintetišu je ćelije odontoblasti?",
+    "options": ["Gleđ (enamelum)", "Dentin (dentinum)", "Cement", "Zubna pulpa"],
+    "correct": 1,
+    "explanation": "Dentin prožima sistem finih kanalića (canaliculi dentis) u kojima se nalaze produžeci odontoblasta. Odontoblasti ostaju vitalni tokom celog života na periferiji zubne pulpe."
+  },
+  {
+    "question": "Koje ćelije stvaraju gleđ (enamelum), najtvrđe tkivo u ljudskom telu (96% minerala), i propadaju nakon nicanja zuba zbog čega se gleđ ne može regenerisati?",
+    "options": ["Odontoblasti", "Ameloblasti (adamantoblasti)", "Cementociti", "Osteoblasti"],
+    "correct": 1,
+    "explanation": "Ameloblasti sintetišu gleđne prizme tokom embrionalnog razvoja zuba. Pošto ove ćelije nestaju nakon nicanja zuba, svako oštećenje gleđi (karijes) zahteva stomatološku sanaciju."
+  },
+  {
+    "question": "Zid digestivne cevi (od jednjaka do analnog kanala) sastoji se od četiri osnovna sloja. Kako se zove sloj rastresitog vezivnog tkiva u kome se nalazi Mejsnerov (Meissner) submukozni nervni splet?",
+    "options": ["Tunica mucosa", "Tunica submucosa", "Tunica muscularis", "Tunica serosa"],
+    "correct": 1,
+    "explanation": "Tunica submucosa sadrži veće krvne i limfne sudove i Mejsnerov splet koji kontroliše sekreciju žlezda i lokalni protok krvi."
+  },
+  {
+    "question": "Između unutrašnjeg kružnog i spoljašnjeg uzdužnog sloja glatkih mišića u tunici muscularis digestivne cevi nalazi se nervni splet zadužen za kontrolu peristaltike. To je:",
+    "options": ["Mejsnerov splet", "Auerbahov (Auerbach) mijenterički splet", "Cilijarni splet", "Solarni splet"],
+    "correct": 1,
+    "explanation": "Auerbahov splet koordinira kontrakcije mišićnih slojeva, omogućavajući mešanje hrane i njeno kretanje kroz digestivni trakt."
+  },
+  {
+    "question": "Jednjak (esophagus) služi za brz transport hrane do želuca. Kojim je epitelom obložena njegova sluzokoža?",
+    "options": ["Jednoslojnim visokoprizmatičnim", "Višerednim cilindričnim sa trepljama", "Pločasto-slojevitim epitelom bez orožavanja", "Prelaznim epitelom"],
+    "correct": 2,
+    "explanation": "Pločasto-slojeviti neorožali epitel jednjaka pruža odličnu zaštitu od mehaničkih povreda grubim zalogajima hrane. Na prelazu u želudac ovaj epitel naglo prelazi u jednoslojni cilindrični."
+  },
+  {
+    "question": "Koji deo želuca sadrži duboke želudačne jamicame (foveolae gastricae) u koje se otvaraju veoma duge, razgranate tubularne žlezde koje produkuju najveći deo želudačnog soka?",
+    "options": ["Kardija", "Pilorus", "Fundus i korpus (telo želuca)", "Antrum"],
+    "correct": 2,
+    "explanation": "Žlezde fundusa i tela želuca sadrže visokospecijalizovane ćelije (glavne, iivične, matične, endokrine) odgovorne za hemijsku digestiju."
+  },
+  {
+    "question": "Koje ćelije želudačnih žlezda (fundusa i tela) imaju intenzivno acidofilnu (ružičastu) citoplazmu i luče hlorovodoničnu kiselinu (HCl) i unutrašnji (Kastlov) faktor?",
+    "options": ["Glavne ćelije", "Parijetalne (ivične / obložne) ćelije", "Sluzne ćelije vrata", "G-ćelije"],
+    "correct": 1,
+    "explanation": "Parijetalne ćelije sadrže jedinstven sistem unutrašnjih kanalića i obilje mitohondrija. Unutrašnji faktor koji luče neophodan je za apsorpciju vitamina B12 u ileumu."
+  },
+  {
+    "question": "Koje ćelije želudačnih žlezda su bazofilne, locirane su uglavnom u bazalnim delovima žlezde i sekretuju pepsinogen (neaktivni prekurzor pepsina)?",
+    "options": ["Glavne ćelije (adelomorfne ćelije)", "Parijetalne ćelije", "G-ćelije", "D-ćelije"],
+    "correct": 0,
+    "explanation": "Glavne ćelije imaju razvijen RER (zato su bazofilne) i sekretuju pepsinogen koji se u kiseloj sredini želuca (pH 1-2) aktivira u pepsin, enzim za razgradnju proteina."
+  },
+  {
+    "question": "Koje endokrine ćelije, smeštene u piloričnim žlezdama želuca, luče hormon gastrin koji snažno stimuliše lučenje želudačne kiseline?",
+    "options": ["I-ćelije", "S-ćelije", "G-ćelije", "D-ćelije"],
+    "correct": 2,
+    "explanation": "G-ćelije reaguju na prisustvo hrane (peptida) u želucu i oslobađaju gastrin u krvotok, koji zatim aktivira parijetalne ćelije na sekreciju HCl."
+  },
+  {
+    "question": "Struktura tankog creva je ekstremno prilagođena apsorpciji. Šta predstavljaju Kerkringovi nabori (plicae circulares)?",
+    "options": ["Uvrtanja samog epitela", "Trajne nabore sluzokože i submukoze tankog creva koji povećavaju apsorpcionu površinu", "Ispupčenja mišićnog sloja", "Prolazne nabore koji nestaju punjenjem creva"],
+    "correct": 1,
+    "explanation": "Kerkringovi nabori su najizraženiji u jejunumu i povećavaju površinu creva za oko 3 puta. Na njima se nalaze crevne resice (villi intestinales)."
+  },
+  {
+    "question": "Crevne resice (villi intestinales) su prstoliki izvratni slojevi sluzokože tankog creva. Koji sud se nalazi u samom centru rastresitog vezivnog tkiva (lamine proprije) svake resice i služi za apsorpciju masti (hylomikrona)?",
+    "options": ["Fenestrirani kapilar", "Središnji limfni sud (hilozni sinus / lacteal)", "Arteriola", "Mala vena"],
+    "correct": 1,
+    "explanation": "Masti se nakon resinteze u enterocitima pakuju u hilomikrone koji su preveliki za kapilare, pa ulaze u slepe završetke centralnog limfnog suda resice."
+  },
+  {
+    "question": "Kako se nazivaju jednostavne tubularne žlezde (uvrtanja epitela) koje se nalaze između baza crevnih resica u tankom i debelom crevu?",
+    "options": ["Brunerove žlezde", "Liberkinove (Lieberkühn) kripti", "Pilorusne žlezde", "Pljuvačne žlezde"],
+    "correct": 1,
+    "explanation": "Liberkinove kripte sadrže matične ćelije koje obnavljaju epitel creva svakih 3-5 dana, kao i specifične Panetove i neuroendokrine ćelije."
+  },
+  {
+    "question": "Koje ćelije se nalaze isključivo na dnu Liberkinovih kripti tankog creva, sadrže krupne, acidofilne sekretorne granule i luče lizozim i defensine (antimikrobna odbrana)?",
+    "options": ["Peharaste ćelije", "Enterociti", "Panetove (Paneth) ćelije", "M-ćelije"],
+    "correct": 2,
+    "explanation": "Panetove ćelije igraju ključnu ulogu u regulaciji crevne mikroflore (mikrobioma) i odbrani od patogenih bakterija lučenjem urođenih antibakterijskih supstanci."
+  },
+  {
+    "question": "Koje su najkrupnije egzokrine žlezde u telu, čiji se izvodni kanali otvaraju u usnu duplju i luče pljuvačku?",
+    "options": ["Suze žlezde", "Pljuvačne žlezde (glandulae salivariae)", "Lojne žlezde", "Znojne žlezde"],
+    "correct": 1,
+    "explanation": "Velike pljuvačne žlezde (parotidna, submandibularna i sublingvalna) dnevno luče oko 1-1.5 litara pljuvačke koja započinje hemijsku digestiju hrane."
+  },
+  {
+    "question": "Zuzova ili parotidna žlezda (glandula parotidea) po svom histološkom sastavu i tipu sekreta je:",
+    "options": ["Čisto serozna žlezda", "Čisto mukozna žlezda", "Mešovita žlezda sa dominantno sluznim sekretom", "Endokrina žlezda"],
+    "correct": 0,
+    "explanation": "Parotidna žlezda je izgrađena isključivo od seroznih acinusa koji produkuju vodenast sekret bogat proteinima i enzimom amilazom (ptijalinom)."
+  },
+  {
+    "question": "Podvilična žlezda (glandula submandibularis) je mešovita žlezda. Koji tip acinusa (sekretornih krajeva) u njoj ubedljivo preovlađuje?",
+    "options": ["Mukozni acinusi", "Serozni acinusi (oko 90%)", "Endokrina ostrvca", "Masne folikule"],
+    "correct": 1,
+    "explanation": "Submandibularna žlezda je seromukozna žlezda u kojoj dominiraju serozne ćelije, a manji broj mukoznih tubula često ima serozne Đanucijeve polumesece."
+  },
+  {
+    "question": "Kako se nazivaju specifične kapice od seroznih ćelija koje se nalaze na krajevima mukoznih tubula u mešovitim pljuvačnim žlezdama?",
+    "options": ["Đanucijevi (Giannuzzi) polumeseci", "Langerhansova ostrvca", "Kortijevi stubovi", "Malpigijeva telašca"],
+    "correct": 0,
+    "explanation": "Đanucijevi polumeseci (ili serozni polumeseci) luče seroznu tečnost koja pomaže u ispiranju i potiskivanju gustog mukoznog sekreta kroz kanale."
+  },
+  {
+    "question": "U izvodnim kanalima pljuvačnih žlezda, koji kanali su obloženi jednoslojnim visokocilindričnim epitelom sa izraženom bazalnom brazdanošću (ispunjeni mitohondrijama) i vrše modifikaciju pljuvačke?",
+    "options": ["Prelazni (interkalatni) kanali", "Prskani (prugasti / sekretorni) kanali - ductus striati", "Glavni izvodni kanali", "Intracelularni kanalići"],
+    "correct": 1,
+    "explanation": "Prugasti kanali aktivno reapsorbuju jone natrijuma i hlora, a sekretuju jone kalijuma i bikarbonata, pretvarajući pljuvačku u hipotoničan rastvor."
+  },
+  {
+    "question": "Pankreas (gušterača) je žlezda sa dvojnom funkcijom. Šta čini egzokrini deo pankreasa, koji proizvodi oko 1.5 litar digestivnih enzima dnevno?",
+    "options": ["Langerhansova ostrvca", "Čisto serozne složene acinusne žlezde", "Mukozni tubuli", "Lojni folikuli"],
+    "correct": 1,
+    "explanation": "Egzokrini pankreas je građen od seroznih acinusa. Specifičnost su centroacinusne ćelije koje predstavljaju početak izvodnih kanala unutar samog acinusa."
+  },
+  {
+    "question": "Koje specifične ćelije se nalaze u centru acinusa egzokrinog pankreasa i predstavljaju jedinstven početni deo interkalatnih izvodnih kanala?",
+    "options": ["Kupferove ćelije", "Centroacinusne ćelije", "Acinusne ćelije", "Beta ćelije"],
+    "correct": 1,
+    "explanation": "Centroacinusne ćelije su bledo obojene ćelije locirane unutar lumena acinusa. One luče vodenastu tečnost bogatu bikarbonatima pod uticajem hormona sekretina."
+  },
+  {
+    "question": "Jetra (hepar) je najveća žlezda u telu. Šta predstavlja klasični lobulus jetre (lobulus hepaticus), koji se smatra osnovnom strukturnom jedinicom?",
+    "options": ["Trougao sa portalnim prostorom u centru", "Šestougaona prizma sa centralnom venom u središtu i portalnim prostorima na uglovima", "Sloj ćelija oko žučne kese", "Vezivnu kapsulu jetre"],
+    "correct": 1,
+    "explanation": "Klasični lobulus jetre stavlja fokus na tok krvi: krv teče sa periferije (iz portalnih trijada) kroz sinusoide prema centralnoj veni (vena centralis)."
+  },
+  {
+    "question": "Koje su osnovne epitelne ćelije jetre, raspoređene u vidu radijalnih nizova (Ančkovljeve gredice) unutar lobulusa?",
+    "options": ["Hepatociti", "Kupferove ćelije", "Ito ćelije", "Holangiociti"],
+    "correct": 0,
+    "explanation": "Hepatociti su poliedarske ćelije sa centralnim okruglim jedrom (često su dvajedarni). Obavljaju stotine metaboličkih funkcija i istovremeno luče žuč."
+  },
+  {
+    "question": "Gde tačno teče žuč koju sintetišu hepatociti, s obzirom na to da se kreće u suprotnom smeru od toka krvi (od centra lobulusa ka periferiji)?",
+    "options": ["Kroz krvne sinusoide", "Kroz žučne kanaliće (canalculi biliferi), koji su u stvari prostori između membrana susednih hepatocita ograđeni tesnim spojevima", "Kroz centralnu venu", "Kroz limfne sudove"],
+    "correct": 1,
+    "explanation": "Žučni kanalići nemaju sopstveni zid, već ih formiraju žlebovi na membranama hepatocita. Oni odvode žuč u Heringove kanaliće na periferiji lobulusa."
+  },
+  {
+    "question": "Koje specifične ćelije se nalaze unutar krvnih sinusoida jetre, fiksirane za endotel, i funkcionišu kao visokoaktivni rezidentni makrofagi jetre?",
+    "options": ["Ito ćelije", "Kupferove (Kupffer) ćelije", "Hepatociti", "Centroacinusne ćelije"],
+    "correct": 1,
+    "explanation": "Kupferove ćelije pripadaju mononuklearno-fagocitnom sistemu. One čiste krv iz portalnog krvotoka od bakterija, imunskih kompleksa i istrošenih eritrocita."
+  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+  {
+    "question": "Kako se naziva uski prostor između endotelnih ćelija sinusoida i hepatocita u jetri, u kome se odvija intenzivna razmena materija i u kome se nalaze Ito ćelije?",
+    "options": ["Heringov kanal", "Disov (Disse) perisinusoidalni prostor", "Žučni kapilar", "Likovni prostor"],
+    "correct": 1,
+    "explanation": "Disov prostor sadrži krvnu plazmu koja slobodno kupa mikrovile hepatocita, omogućavajući brz prenos hranljivih materija i proteina."
+  },
+  {
+    "question": "Koje specifične ćelije jetre, locirane u Disovom prostoru, skladište vitamin A (retinoid) u vidu lipidnih kapljica, a u uslovima hroničnog oštećenja (npr. alkohol) sintetišu kolagen i izazivaju cirozu?",
+    "options": ["Kupferove ćelije", "Ito ćelije (zvezdaste ćelije jetre)", "Hepatociti", "Centroacinusne ćelije"],
+    "correct": 1,
+    "explanation": "Ito ćelije se pri upali aktiviraju, gube sposobnost skladištenja vitamina A i transformišu se u miofibroblaste koji luče vezivno tkivo i stvaraju ožiljke (fibroza i ciroza)."
+  },
+  {
+    "question": "Koji prostor se nalazi na uglovima klasičnog lobulusa jetre, bogat je vezivnim tkivom i sadrži portalnu trijadu?",
+    "options": ["Disov prostor", "Portalni prostor (Kiernanovi prostori)", "Heringov kanal", "Zid centralne vene"],
+    "correct": 1,
+    "explanation": "Portalni prostor sadrži tri glavne strukture: ogranak arterije hepatike, ogranak vene porte i žučni kanalić, kao i limfne sudove."
+  },
+  {
+    "question": "Sluzokoža respiratornog sistema ima specifičnu ulogu u prečišćavanju vazduha. Koji tip epitela se naziva 'respiratorni epitel' jer oblaže najveći deo disajnih puteva?",
+    "options": ["Jednoslojni pločasti epitel", "Višeredni cilindrični epitel sa trepljama i peharastim ćelijama", "Pločasto-slojeviti epitel", "Prelazni epitel"],
+    "correct": 1,
+    "explanation": "Treplje na apikalnoj površini epitela konstantno se pomeraju u pravcu ždrela, transportujući mukus (koji luče peharaste ćelije) sa zarobljenim česticama prašine i bakterijama."
+  },
+  {
+    "question": "Koji deo respiratornog trakta sadrži vokalne nabore (glasne žice) i obložen je pločasto-slojevitim neorožalim epitelom radi zaštite od snažnog strujanja vazduha i trenja?",
+    "options": ["Dušnik (trachea)", "Grkljan (larynx)", "Nosna šupljina", "Bronhiole"],
+    "correct": 1,
+    "explanation": "Lareks je građen od hrskavica i mišića. Dok je najveći deo obložen respiratornim epitelom, same glasne žice su pokrivene slojevitim pločastim epitelom."
+  },
+  {
+    "question": "Zid dušnika (trachea) karakteriše izuzetna čvrstina i elastičnost. Koji strukturni elementi sprečavaju kolaps dušnika tokom udisaja?",
+    "options": ["Snopovi glatkih mišića", "16-20 potkovičastih (C-oblik) prstenova hijaline hrskavice", "Kompaktna koštana ploča", "Slojevi elastičnih vlakana u adventitiji"],
+    "correct": 1,
+    "explanation": "Hrskavičavi prstenovi drže lumen otvorenim. Otvoreni zadnji deo prstena (okrenut ka jednjaku) premošćen je vezivnim tkivom i glatkim mišićem (m. trachealis)."
+  },
+  {
+    "question": "Kako se menja histološka građa zida kako idemo dublje u bronhijalno stablo, tačnije na prelazu iz bronha (dušnica) u bronhiole?",
+    "options": ["Povećava se količina hrskavice", "Hrskavica i žlezde potpuno nestaju, a zid postaje dominiran glatkim mišićima i elastičnim vlaknima", "Epitel postaje pločasto-slojevit", "Gube se elastična vlakna"],
+    "correct": 1,
+    "explanation": "Bronhiole nemaju hrskavicu u svom zidu. Dominacija glatkih mišića omogućava im da menjaju promer pod uticajem autonomnog nervnog sistema (npr. astma uzrokuje bronhospazam)."
+  },
+  {
+    "question": "Koje specifične ćelije, bez treplji i kupolastog oblika, zamenjuju peharaste ćelije u epitelu terminalnih i respiratornih bronhiola, a luče komponente surfaktanta i detoksikuju ksenobiotike?",
+    "options": ["Kupferove ćelije", "Klara ćelije (klub ćelije / exocrine bronchiolar cells)", "Pneumociti tip I", "Pneumociti tip II"],
+    "correct": 1,
+    "explanation": "Klara ćelije luče glikoproteine koji štite epitel bronhiola, deluju kao matične ćelije za obnovu epitela i sadrže razvijen glatki ER za detoksikaciju štetnih materija iz vazduha."
+  },
+  {
+    "question": "Plućni alveoli su mesta gde se odvija gasna razmena. Koje ćelije pokrivaju preko 95% površine alveola i izuzetno su tanke kako bi omogućile difuziju gasova?",
+    "options": ["Pneumociti tip I (skvamozne alveolarne ćelije)", "Pneumociti tip II", "Alveolarni makrofagi", "Klara ćelije"],
+    "correct": 0,
+    "explanation": "Pneumociti tip I su pločaste ćelije čija je citoplazma maksimalno istanjena i spojena tesnim spojevima sa susednim ćelijama, čineći deo hematogasne barijere."
+  },
+  {
+    "question": "Koje ćelije alveola su kubičnog oblika, štrče u lumen alveole, sadrže lamolarna telašca i luče plućni surfaktant koji smanjuje površinski napon i sprečava kolaps alveola pri izdisaju?",
+    "options": ["Pneumociti tip I", "Pneumociti tip II (velike alveolarne ćelije)", "Alveolarni makrofagi (prašinaste ćelije)", "Endotelne ćelije"],
+    "correct": 1,
+    "explanation": "Surfaktant je mešavina fosfolipida i proteina. Nedostatak surfaktanta kod prevremeno rođene dece izaziva respiratorni distres sindrom (RDS)."
+  },
+  {
+    "question": "Kako se nazivaju visokoaktivni makrofagi u plućima koji patroliraju površinom alveola i 'gutaju' čestice čađi, prašine i bakterije koje su dospele u dubinu pluća?",
+    "options": ["Pneumociti tip II", "Alveolarni makrofagi (ćelije prašine)", "Kupferove ćelije", "Langerhansove ćelije"],
+    "correct": 1,
+    "explanation": "Alveolarni makrofagi čiste alveole. Kod pušača ili osoba izloženih zagađenju, ove ćelije su prepune crnih čestica ugljenika."
+  },
+  {
+    "question": "Koja je osnovna strukturna i funkcionalna jedinica bubrega zadužena za filtraciju krvi i stvaranje urina, a u svakom bubregu ih ima oko milion?",
+    "options": ["Nefron", "Bubrežna piramida", "Malpigijeva piramida", "Bubrežna karlica"],
+    "correct": 0,
+    "explanation": "Nefron se sastoji od bubrežnog (korpuskula) telašca gde se vrši filtracija i sistema bubrežnih tubula u kojima se vrši reapsorpcija i sekrecija."
+  },
+  {
+    "question": "Šta čini bubrežno telašce (corpusculum renis / Malpigijevo telo) smešteno u kori bubrega?",
+    "options": ["Henleova petlja i sabirna cev", "Glomerulus (klupko kapilara) i Baumonova (Bowman) kapsula koja ga okružuje", "Proksimalni i distalni tubul", "Bubrežna karlica"],
+    "correct": 1,
+    "explanation": "U bubrežnom telašcu se krv pod visokim pritiskom filtrira kroz filtracionu barijeru, pri čemu nastaje primarni urin (ultrafiltrat plazme)."
+  },
+  {
+    "question": "Unutrašnji (visceralni) list Baumonove kapsule obmotava kapilare glomerulusa. Od kojih visoko modifikovanih ćelija je izgrađen ovaj list?",
+    "options": ["Pneumocita", "Podocita", "Hepatocita", "Mezangijalnih ćelija"],
+    "correct": 1,
+    "explanation": "Podociti imaju zvezdast oblik sa primarnim i sekundarnim produžecima (pedicili) koji se prepliću i ostavljaju između sebe filtracione pukotine (slit pores)."
+  },
+  {
+    "question": "Filtracionu barijeru bubrega (kroz koju prolazi voda i male molekule, a zaustavljaju se proteini i ćelije krvi) čine tri sloja. To su fenestrirani endotel kapilara, debela zajednička bazalna lamina i:",
+    "options": ["Parijetalni list kapsule", "Filtracione pukotine između pedicila podocita", "Glatke mišićne ćelije", "Mezangijalni matriks"],
+    "correct": 1,
+    "explanation": "Ova trokomponentna barijera deluje kao veličinski i električni (negativno naelektrisan) filter, sprečavajući npr. prolaz albumina u urin."
+  },
+  {
+    "question": "Koji deo bubrežnog tubula je najduži, nalazi se u kori bubrega, obložen je kockastim ćelijama sa ekstremno razvijenom četkastom ivicom (mikrovili) i reapsorbuje oko 70-80% vode, glukoze i aminokiselina iz primarnog urina?",
+    "options": ["Proksimalni izuvijani tubul (tubulus contortus proximalis)", "Henleova petlja", "Distalni izuvijani tubul", "Sabirni tubul"],
+    "correct": 0,
+    "explanation": "Četkasta ivica drastično povećava apsorpcionu površinu. Ćelije proksimalnog tubula su krcate mitohondrijama jer troše ogromnu energiju za aktivni transport jona."
+  },
+  {
+    "question": "Henleova petlja ima ključnu ulogu u koncentrisanju urina mehanizmom protivstrujnog umnožitelja. Koji tip epitela oblaže njen tanki segment?",
+    "options": ["Jednoslojni kockasti", "Jednoslojni pločasti epitel", "Jednoslojni cilindrični", "Višeredni sa trepljama"],
+    "correct": 1,
+    "explanation": "Tanki segment Henleove petlje građen je od veoma spljoštenih ćelija i spušta se duboko u medulu bubrega, gde vlada visok osmotski pritisak."
+  },
+  {
+    "question": "U blizini vaskularnog pola sopstvenog bubrežnog telašca, ćelije distalnog tubula postaju uže, gušće pakovane i formiraju senzor koji prati koncentraciju jona natrijuma i hlora u urinu. Ta struktura se zove:",
+    "options": ["Macula densa (gusta pega)", "Juxtaglomerularne ćelije", "Ekstraglomerularni mezangijum", "Podocitno polje"],
+    "correct": 0,
+    "explanation": "Macula densa je deo jukstaglomerularnog aparata. Ona registruje pad natrijuma i šalje signal susednim ćelijama da oslobode renin."
+  },
+  {
+    "question": "Koje ćelije jukstaglomerularnog aparata (modifikovane glatke mišićne ćelije aferentne arteriole) sintetišu i luče enzim renin u krvotok kao odgovor na pad krvnog pritiska?",
+    "options": ["Ćelije makule dense", "Jukstaglomerularne (JG) ćelije (granularne ćelije)", "Polkisenove ćelije", "Podociti"],
+    "correct": 1,
+    "explanation": "Renin aktivira kaskadu renin-angiotenzin-aldosteron (RAAS), što dovodi do vazokonstrikcije i zadržavanja vode i soli, čime se podiže krvni pritisak."
+  },
+  {
+    "question": "Sluzokoža organa za izlučivanje urina koji su izloženi stalnom rastezanju (bubrežne čašice, karlica, mokraćovod i mokraćna bešika) obložena je kojim specifičnim epitelom?",
+    "options": ["Pločasto-slojevitim neorožalim", "Prelaznim epitelom (urotel)", "Jednoslojnim kockastim", "Višerednim cilindričnim"],
+    "correct": 1,
+    "explanation": "Urotel je nepropustan za vodu i toksine iz urina. Kada je bešika prazna, epitel ima 5-6 slojeva i površinske ćelije su kupolaste (kišobranaste), a kada se napuni, epitel se istanji na 2-3 sloja spljoštenih ćelija."
+  },
+  {
+    "question": "Spoljašnji omotač muških polnih žlezda (testisa) čini debela, čvrsta kapsula od gustog formiranog vezivnog tkiva bele boje, koja se naziva:",
+    "options": ["Tunica vaginalis", "Tunica albuginea", "Tunica vasculosa", "Mediastinum testis"],
+    "correct": 1,
+    "explanation": "Tunica albuginea šalje vezivne pregrade (septa) u unutrašnjost testisa, deleći ga na oko 250 lobulusa (klobčića)."
+  },
+  {
+    "question": "U unutrašnjosti lobulusa testisa nalaze se visoko izuvijane cevčice u kojima se odvija proces spermatogeneze (stvaranje spermatozoida). To su:",
+    "options": ["Semene cevčice (tubuli seminiferi contorti)", "Prave cevčice (tubuli recti)", "Mreža testisa (rete testis)", "Izvodni kanalići (ductuli efferentes)"],
+    "correct": 0,
+    "explanation": "Zid semenih cevčica građen je od složenog seminifernog (spermatogenog) epitela koji sadrži potporne Sertolijeve ćelije i spermatogene ćelije u različitim fazama razvoja."
+  },
+  {
+    "question": "Koje krupne ćelije, locirane unutar semenih cevčica, pružaju strukturnu i metaboličku potporu klicinim ćelijama, formiraju krvno-testisnu barijeru i luče androgen-vezujući protein (ABP)?",
+    "options": ["Lejdigove ćelije", "Sertolijeve ćelije (potporne ćelije)", "Spermatogonije", "Spermatide"],
+    "correct": 1,
+    "explanation": "Sertolijeve ćelije su povezane tesnim spojevima koji dele epitel na bazalni i adluminalni odeljak, štiteći spermatozoide u razvoju od napada sopstvenog imunskog sistema."
+  },
+  {
+    "question": "Gde su locirane Lejdigove (Leydig) ili intersticijalne ćelije, i koja je njihova primarna endokrina funkcija?",
+    "options": ["Unutar seminifernih cevčica; luče inhibin", "U vezivnom intersticijumu između semenih cevčica; luče testosteron pod uticajem LH", "U epididimisu; luče sluz", "U prostati; luče kiselu fosfatazu"],
+    "correct": 1,
+    "explanation": "Lejdigove ćelije su tipične endokrine ćelije koje sintetišu steroidne hormone. Bogate su lipidnim kapljicama i glatkim ER, a testosteron koji luče je neophodan za održavanje spermatogeneze."
+  },
+  {
+    "question": "Proces spermatogeneze počinje od matičnih ćelija koje se nalaze na samoj bazalnoj lamini semenih cevčica i dele se mitotski. To su:",
+    "options": ["Spermatogonije", "Primarne spermatocite", "Sekundarne spermatocite", "Spermatide"],
+    "correct": 0,
+    "explanation": "Spermatogonije (tip A i tip B) su diploidne ćelije (2n). Tip B spermatogonije se dele i daju primarne spermatocite."
+  },
+  {
+    "question": "Koje ćelije spermatogeneze nastaju iz spermatogonija, ulaze u dugotrajnu profazu prve mejoze (mejoza I) i predstavljaju najveće spermatogene ćelije u epitelu?",
+    "options": ["Primarne spermatocite (spermatocyti primarii)", "Sekundarne spermatocite", "Spermatide", "Spermatozoidi"],
+    "correct": 0,
+    "explanation": "Primarne spermatocite provode oko 3 nedelje u profazi I (gde se vrši krosing-over), zbog čega su uočljive na histološkim preparatima testisa."
+  },
+  {
+    "question": "Nakon završetka mejoze II, nastaju male, haploidne (n) ćelije koje su locirane blizu lumena semene cevčice i više se ne dele, već prolaze kroz proces morfološkog sazrevanja (spermiogenezu). To su:",
+    "options": ["Spermatogonije", "Primarne spermatocite", "Sekundarne spermatocite", "Spermatide"],
+    "correct": 3,
+    "explanation": "Spermatide su inicijalno obične okrugle ćelije. Tokom spermiogeneze gube višak citoplazme, formiraju rep, kondenzuju jedro i razvijaju akrozom."
+  },
+  {
+    "question": "Šta predstavlja akrozom, struktura u obliku kape koja pokriva prednju polovinu jedra zrelog spermatozoida?",
+    "options": ["Modifikovanu mitohondriju za energiju", "Modifikovan lizozom (iz Golđijevog aparata) ispunjen hidrolitičkim enzimima za razgradnju omotača jajne ćelije", "Strukturu za kretanje", "Centriol"],
+    "correct": 1,
+    "explanation": "Enzimi unutar akrozoma (hijaluronidaza i akrozin) oslobađaju se tokom akrozomske reakcije i omogućavaju spermatozoidu da probije zonu pelucidu jajne ćelije."
+  },
+  {
+    "question": "Gde su locirane brojne mitohondrije zrelog spermatozoida, koje obezbeđuju ATP neophodan za pokretanje repa (biča)?",
+    "options": ["U glavi spermatozoida", "U vratu i središnjem delu repa (vratni i srednji segment)", "Na samom vrhu glave", "U glavnom delu repa"],
+    "correct": 1,
+    "explanation": "Mitohondrije su u središnjem segmentu (middle piece) spiralno uvijene oko aksonele (centralnog skeleta biča), direktno snabdevajući energijom motorne proteine."
+  },
+  {
+    "question": "Koji dugi, izuvijani kanal (dužine oko 4-6 metara kod čoveka) je smešten na zadnjoj površini testisa, služi kao mesto gde spermatozoidi stiču pokretljivost i sposobnost oplodnje, a obložen je dvorednim cilindričnim epitelom sa stereocilijama?",
+    "options": ["Ductus deferens (semenovod)", "Epididymis (pasemenik)", "Ductus ejaculatorius", "Uretra"],
+    "correct": 1,
+    "explanation": "Epididimis akumulira i skladišti zrele spermatozoide. Stereocilije (dugi nepokretni mikrovili) na epitelu imaju ulogu u reapsorpciji tečnosti koja dolazi iz testisa."
+  },
+  {
+    "question": "Koji kanal vodi spermatozoide od epididimisa do ejakulatornog kanala, a karakteriše ga ekstremno debeo mišićni zid građen od tri sloja glatkih mišića koji omogućavaju snažnu propulziju tokom ejakulacije?",
+    "options": ["Ductus deferens (semenovod)", "Uretra", "Tubulus rectus", "Rete testis"],
+    "correct": 0,
+    "explanation": "Semenovod ima uzan lumen i debeo mišićni zid, pa se pod prstima oseća kao čvrsta vrpca. Kontrakcije mišića tokom orgazma brzo istiskuju spermu napred."
+  },
+  {
+    "question": "Koja je najveća pomoćna žlezda muškog reproduktivnog sistema, oblika je kestena, opkoljava početni deo uretre i luči bistru, slabo kiselu tečnost bogatu limunskom kiselinom i prostatično-specifičnim antigenom (PSA)?",
+    "options": ["Semene kesice (vesiculae seminales)", "Prostata", "Bulbouretralne (Cowperove) žlezde", "Parotidna žlezda"],
+    "correct": 1,
+    "explanation": "Prostata je građena od 30-50 tubuloalveolarnih žlezda ugrađenih u gustu fibromuskularnu stromu, čije kontrakcije istiskuju sekret tokom ejakulacije."
+  },
+  {
+    "question": "Endometrijum je unutrašnji omotač (sluzokoža) materice. Koji se sloj endometrijuma ciklično menja, ljušti i krvari tokom menstruacije pod uticajem jajničkih hormona?",
+    "options": ["Stratum basale", "Stratum functionale (funkcionalni sloj)", "Miometrijum", "Perimetrijum"],
+    "correct": 1,
+    "explanation": "Stratum functionale reaguje na progesteron i estrogene. Ako ne dođe do oplodnje, pad hormona uzrokuje spazam spiralnih arterija, ishemiju i odbacivanje ovog sloja."
+  },
+  {
+    "question": "Koji sloj endometrijuma materice ne biva odbačen tokom menstrualnog krvarenja, već služi kao regenerativna zona iz koje se obnavlja sluzokoža u sledećem ciklusu?",
+    "options": ["Stratum functionale", "Stratum basale (bazalni sloj)", "Miometrijum", "Parametrijum"],
+    "correct": 1,
+    "explanation": "Stratum basale sadrži dna materičnih žlezda i sopstvene prave arterije koje nisu podložne spazmu, obezbeđujući matične ćelije za proliferativnu fazu."
+  },
+  {
+    "question": "Masivni srednji sloj zida materice (miometrijum) izgrađen je od glatkog mišićnog tkiva. Šta se dešava sa ovim slojem tokom trudnoće pod uticajem hormona?",
+    "options": ["Dolazi do atrofije mišićnih ćelija", "Dolazi do ekstremne hipertrofije (povećanja veličine) i hiperplazije (povećanja broja) glatkih mišićnih ćelija", "Pretvara se u vezivno tkivo", "Okoštava"],
+    "correct": 1,
+    "explanation": "Glatke mišićne ćelije miometrijuma tokom trudnoće povećavaju svoju dužinu i do 10 puta, obezbeđujući snagu neophodnu za porođajne kontrakcije."
+  },
+  {
+    "question": "Gravesova bolest (bazedovljeva bolest) je autoimuno stanje koje uzrokuje hiperfunkciju štitaste žlezde. Koji se histološki nalaz uočava u folikulima štitaste žlezde kod ove bolesti?",
+    "options": ["Folikuli su prepuni koloida, a epitel je spljošten", "Folikularne ćelije postaju visoko cilindrične, koloid je bledo obojen sa izraženim reapsorpcionim vakuolama na periferiji usled hiperaktivnosti", "Potpuni nestanak folikula i zamena masnim tkivom", "Formiranje koštanih gredica"],
+    "correct": 1,
+    "explanation": "Kod Gravesove bolesti, autoantitela (TSI) stimulišu TSH receptore, dovodeći do nekontrolisane sinteze i folikularne hiperplazije (egzoftalmus, tahikardija)."
+  },
+  {
+    "question": "Koji deo nadbubrežne žlezde (cortex ili medulla) potiče od neuroektodermalnih ćelija neuralne kreste i funkcioniše praktično kao modifikovana simpatička ganglija?",
+    "options": ["Kora nadbubrežne žlezde (cortex)", "Srž nadbubrežne žlezde (medulla)", "Kapsula", "Zona glomerulosa"],
+    "correct": 1,
+    "explanation": "Srž nadbubrežne žlezde sadrži hromafine ćelije koje direktno inervišu preganglijska simpatička vlakna i luče kateholamine (adrenalin i noradrenalin) u krv."
+  },
+  {
+    "question": "Koje specifične ćelije srži nadbubrežne žlezde primaju impulse od preganglijskih simpatičkih vlakana i luče adrenalin i noradrenalin direktno u krvotok tokom 'bori se ili beži' reakcije?",
+    "options": ["Folikularne ćelije", "Hromafine ćelije (pheochromocyti)", "Spongiociti", "Pincipalne ćelije"],
+    "correct": 1,
+    "explanation": "Hromafine ćelije su dobile ime jer se boje braon bojom u prisustvu hromnih soli, što je posledica oksidacije granula sa kateholaminima."
+  },
+  {
+    "question": "Endokrini deo pankreasa organizovan je u vidu svetlijih ostrvaca razbacanih među egzokrinim acinusima. To su:",
+    "options": ["Langerhansova ostrvca (insulae pancreaticae)", "Malpigijeva telašca", "Pajerove ploče", "Hasalova telašca"],
+    "correct": 0,
+    "explanation": "Langerhansova ostrvca čine samo 1-2% mase pankreasa, ali su bogato vaskularizovana fenestriranim kapilarima za brz unos hormona u krv."
+  },
+  {
+    "question": "Koje ćelije Langerhansovih ostrvaca pankreasa su najbrojnije (oko 70%), locirane su uglavnom u centru ostrvca i luče hormon insulin?",
+    "options": ["Alfa (A) ćelije", "Beta (B) ćelije", "Delta (D) ćelije", "PP ćelije"],
+    "correct": 1,
+    "explanation": "Beta ćelije sekretuju insulin koji snižava nivo glukoze u krvi olakšavajući njen ulazak u ćelije. Uništenje ovih ćelija uzrokuje Dijabetes melitus tip 1."
+  },
+  {
+    "question": "Koje ćelije Langerhansovih ostrvaca pankreasa su locirane periferno, čine oko 20% ćelija i luče hormon glukagon, koji podiže nivo šećera u krvi?",
+    "options": ["Alfa (A) ćelije", "Beta (B) ćelije", "Delta (D) ćelije", "F ćelije"],
+    "correct": 0,
+    "explanation": "Glukagon je antagonist insulina. On stimuliše glikogenolizu i glukoneogenezu u jetri, oslobađajući glukozu u krvotok tokom gladovanja."
+  },
+  {
+    "question": "Koje ćelije Langerhansovih ostrvaca luče hormon somatostatin, koji deluje lokalno (parakrino) i inhibira sekreciju i insulina i glukagona?",
+    "options": ["Alfa ćelije", "Beta ćelije", "Delta (D) ćelije", "G-ćelije"],
+    "correct": 2,
+    "explanation": "Delta ćelije (oko 5-10% ostrvca) svojim somatostatinom fino podešavaju i moduliraju metabolički odgovor endokrinog pankreasa."
+  },
+  {
+    "question": "Koža (integumentum commune) je najveći organ tela. Iz koja dva glavna histološka sloja je izgrađena?",
+    "options": ["Epidermis (epitelni sloj) i dermis (vezivni sloj)", "Epidermis i hipodermis", "Dermis i potkožno masno tkivo", "Stratum corneum i stratum basale"],
+    "correct": 0,
+    "explanation": "Epidermis potiče od ektoderma i građen je od uobličenog slojevitog pločastog orožalog epitela, dok dermis potiče od mezoderma i građen je od vezivnog tkiva."
+  },
+  {
+    "question": "Koje su najbrojnije ćelije epidermisa kože (oko 85-90%) koje prolaze kroz proces keratinizacije (orožavanja) stvarajući zaštitnu barijeru?",
+    "options": ["Melanociti", "Keratinociti", "Langerhansove ćelije", "Merkelove ćelije"],
+    "correct": 1,
+    "explanation": "Keratinociti se neprekidno dele u bazalnom sloju, pomeraju se ka površini, menjaju strukturu i na kraju deskvamiraju (otpadaju) kao mrtve rožnate ćelije."
+  },
+  {
+    "question": "U kom sloju epidermisa se odvija intenzivna mitotska aktivnost (proliferacija) ćelija, zbog čega se ovaj jednoslojni kockasti/cilindrični sloj naziva i stratum germinativum?",
+    "options": ["Stratum basale (bazalni sloj)", "Stratum spinosum", "Stratum granulosum", "Stratum corneum"],
+    "correct": 0,
+    "explanation": "Stratum basale leži na bazalnoj lamini. Sadrži matične ćelije keratinocita koje obezbeđuju stalno obnavljanje epidermisa (kompletan turn-over traje oko 20-30 dana)."
+  },
+  {
+    "question": "Koji sloj epidermisa karakteriše prisustvo trnolikih produžetaka na keratinocitima, koji su bogati desmozomima i obezbeđuju visoku mehaničku otpornost epitela na rastezanje i pritisak?",
+    "options": ["Stratum basale", "Stratum spinosum (trnasti sloj)", "Stratum granulosum", "Stratum corneum"],
+    "correct": 1,
+    "explanation": "Tokom fiksacije tkiva, ćelije se malo skupe, ali ostaju čvrsto vezane desmozomima, što im pod mikroskopom daje specifičan 'trnasti' ili zvezdasti izgled."
+  },
+  {
+    "question": "Koji je najpovršniji sloj epidermisa, izgrađen od desetak slojeva mrtvih, spljoštenih ćelija bez jedra i organela, potpuno ispunjenih keratinom i povezanim hidrofobnim lipidima?",
+    "options": ["Stratum basale", "Stratum spinosum", "Stratum granulosum", "Stratum corneum (rožnati sloj)"],
+    "correct": 3,
+    "explanation": "Stratum corneum predstavlja primarnu fizičku barijeru kože. Štiti organizam od dehidratacije, ulaska mikroorganizama i mehaničkih povreda."
+  },
+  {
+    "question": "Koje ćelije epidermisa kože potiču iz neuralne kreste, locirane su u bazalnom sloju i sintetišu tamni pigment melanin koji štiti kožu od UV zračenja?",
+    "options": ["Keratinociti", "Melanociti", "Langerhansove ćelije", "Merkelove ćelije"],
+    "correct": 1,
+    "explanation": "Melanociti imaju duge produžetke kojima prenose granule melanina (melanozome) u citoplazmu okolnih keratinocita, formirajući zaštitni 'štit' iznad njihovih jedara."
+  },
+  {
+    "question": "Koje ćelije epidermisa kože pripadaju monocitno-makrofagnom sistemu (potiču iz koštane srži), imaju ulogu antigen-prezentujućih ćelija i predstavljaju prvu liniju imunske odbrane kože?",
+    "options": ["Melanociti", "Langerhansove ćelije", "Merkelove ćelije", "Keratinociti"],
+    "correct": 1,
+    "explanation": "Langerhansove ćelije ( dendriticne ćelije) hvataju antigene koji prodru kroz kožu, prerađuju ih i migriraju u limfne čvorove gde ih prezentuju T-limfocitima."
+  },
+  {
+    "question": "Koje ćelije epidermisa se nalaze u bazalnom sloju debele kože, povezane su sa aferentnim nervnim vlaknima i funkcionišu kao mehanoreceptori za oset blagog dodira?",
+    "options": ["Melanociti", "Langerhansove ćelije", "Merkelove ćelije", "Klara ćelije"],
+    "correct": 2,
+    "explanation": "Merkelove ćelije su neuroendokrine epitelne ćelije. One ostvaruju sinaptički kontakt sa proširenjima somatosenzornih aksona (Merkelovi diskovi)."
+  },
+  {
+    "question": "Dermis (krno) se nalazi ispod epidermisa i građen je od vezivnog tkiva. Kako se zove njegov površinski sloj koji formira prstolika ispupčenja prema epidermisu i sadrži bogatu mrežu kapilara i taktilna telašca?",
+    "options": ["Stratum reticulare", "Stratum papillare (papilarni sloj)", "Hypodermis", "Stratum corneum"],
+    "correct": 1,
+    "explanation": "Stratum papillare je izgrađen od rastresitog vezivnog tkiva. Papile dermisa povećavaju površinu spoja sa epidermisom, sprečavajući njegovo smicanje."
+  },
+  {
+    "question": "Koji je dublji i znatno deblji sloj dermisa, izgrađen od gustog neformiranog vezivnog tkiva sa debelim snopovima kolagena tipa I i elastičnih vlakana koji daju koži čvrstinu i elastičnost?",
+    "options": ["Stratum papillare", "Stratum reticulare (mrežasti sloj)", "Hypodermis", "Epidermis"],
+    "correct": 1,
+    "explanation": "Stratum reticulare sadrži i veće krvne sudove, folikule dlaka, lojne i znojne žlezde. Oštećenje ovog sloja (npr. preveliko rastezanje u trudnoći) uzrokuje strije."
+  },
+  {
+    "question": "Lojne žlezde (glandulae sebaceae) su obično povezane sa folikulom dlake. Po kom tipu sekrecije (gde cela ćelija propada i postaje deo sekreta) ove žlezde oslobađaju loj (sebum)?",
+    "options": ["Merokrina sekrecija", "Apokrina sekrecija", "Holokrina sekrecija", "Endokrina sekrecija"],
+    "correct": 2,
+    "explanation": "Kod holokrine sekrecije, ćelije na periferiji glandule proliferišu, pomeraju se ka centru, akumuliraju lipide i na kraju kompletno pucaju (dezintegrišu se) oslobađajući sekret."
+  },
+  {
+    "question": "Obične ekrine znojne žlezde (glandulae sudoriferae) raspoređene su po celom telu i imaju ulogu u termoregulaciji. Koji tip sekrecije (egzocitoza bez gubitka ćelijskog materijala) koriste ove žlezde?",
+    "options": ["Holokrina sekrecija", "Apokrina sekrecija", "Merokrina (ekrina) sekrecija", "Ciklična sekrecija"],
+    "correct": 2,
+    "explanation": "Merokrina sekrecija je klasična egzocitoza sekretornih granula izgrađenih u Golđijevom aparatu. Ćelija ostaje potpuno intaktna."
+  },
+  {
+    "question": "Mlečna žlezda (glandula mammaria) je modifikovana znojna žlezda. Na koji način se iz njenih ćelija oslobađa lipidna komponenta mleka (pri čemu lipidna kapljica sa sobom odnosi i deo apikalne membrane i citoplazme ćelije)?",
+    "options": ["Merokrinim mehanizmom", "Apokrinim mehanizmom sekrecije", "Holokrinim mehanizmom", "Pasivnom difuzijom"],
+    "correct": 1,
+    "explanation": "Mlečna žlezda koristi dvojni mehanizam: proteini (kazein) se luče merokrino (egzocitozom), dok se masti luče apokrino (otkidanjem dela apikalne citoplazme)."
+  },
+  {
+    "question": "Koji specifični mehanoreceptori, locirani duboko u dermisu i hipodermisu, imaju oblik lukovice (na poprečnom preseku podsećaju na presečen luk) i zaduženi su za detekciju grubog pritiska i visokofrekventnih vibracija?",
+    "options": ["Mejsnerova telašca", "Pacinijeva (Vater-Pacini) telašca", "Merkelovi diskovi", "Rafinijeva telašca"],
+    "correct": 1,
+    "explanation": "Pacinijeva telašca su krupni, enkapsulirani receptori građeni od koncentričnih lamela spljoštenih Švanovih ćelija i veziva oko centralnog nervnog završetka."
+  },
+  {
+    "question": "Koji enkapsulirani receptori su locirani u papilama dermisa (naročito na prstima, usnama i jeziku), elipsoidnog su oblika i zaduženi su za detekciju finog dodira i diskriminaciju teksture?",
+    "options": ["Pacinijeva telašca", "Mejsnerova (Meissner) taktilna telašca", "Rufinijeva telašca", "Krauseova telašca"],
+    "correct": 1,
+    "explanation": "Mejsnerova telašca omogućavaju visoku taktilnu osetljivost vrhova prstiju, a njihov broj postepeno opada sa starenjem."
+  },
+  {
+    "question": "Čulni organ ukusa predstavljen je gustativnim (gustatornim) pupoljcima. Koje su tri glavne populacije ćelija unutar svakog gustativnog pupoljka?",
+    "options": ["Senzorne (gustativne) ćelije, potporne ćelije i bazalne (matične) ćelije", "Keratinociti, melanociti i Merkelove ćelije", "Hepatociti, Kupferove i Ito ćelije", "Neuroni, astrociti i mikroglija"],
+    "correct": 0,
+    "explanation": "Senzorne ćelije imaju mikrovile na vrhu koji štrče kroz poru ukusa. Bazalne ćelije se neprekidno dele i zamenjuju oštećene senzorne ćelije svakih 10-14 dana."
+  },
+  {
+    "question": "Zid očne jabučice (bulbus oculi) sastoji se od tri koncentrična omotača. Kako se naziva spoljašnji, čvrsti fibrozni omotač koji pruža oblik oku i štiti unutrašnje strukture?",
+    "options": ["Vaskularni omotač (uvea)", "Unutrašnji omotač (retina)", "Fibrozni omotač (tunica fibrosa oculi), koji se sastoji od neprovidne sklere i providne rožnjače (cornea)", "Vaskularna kora"],
+    "correct": 2,
+    "explanation": "Sklera čini zadnjih 5/6 i neprovidna je (bofor), dok rožnjača čini prednju 1/6, potpuno je providna i nema krvne sudove (ishranjuje se difuzijom)."
+  },
+  {
+    "question": "Rožnjača (cornea) je prva i najvažnija refraktarna površina oka. Koji tip epitela pokriva njenu PREDNJU površinu, izloženu spoljašnjoj sredini i suznom filmu?",
+    "options": ["Jednoslojni pločasti epitel", "Pločasto-slojeviti epitel bez orožavanja", "Pločasto-slojeviti epitel sa orožavanjem", "Prelazni epitel"],
+    "correct": 1,
+    "explanation": "Prednji epitel rožnjače je bogat slobodnim nervnim završecima (ekstremno osetljiv na bol i dodir) i ima veliku sposobnost regeneracije zahvaljujući matičnim ćelijama u limbusu."
+  },
+  {
+    "question": "Kako se naziva debela, specifična bazalna lamina locirana neposredno ispod prednjeg epitela rožnjače, koja pruža mehaničku stabilnost i barijeru protiv infekcija?",
+    "options": ["Descemetova membrana", "Baumonova (Bowman) membrana", "Bruchova membrana", "Ranvijerova membrana"],
+    "correct": 1,
+    "explanation": "Baumonova membrana je homogena i ne regeneriše se; ako se ošteti dubljom povredom, na rožnjači ostaje trajan ožiljak (zamućenje)."
+  },
+  {
+    "question": "Koji je unutrašnji, endotelni sloj rožnjače (okrenut ka prednjoj očnoj komori), izgrađen od jednoslojnog pločastog epitela čija je ključna uloga konstantno 'isumpavanje' vode iz strome kako bi rožnjača ostala prozirna?",
+    "options": ["Prednji epitel rožnjače", "Zadnji epitel rožnjače (endotel rožnjače)", "Baumonova membrana", "Descemetova membrana"],
+    "correct": 1,
+    "explanation": "Endotel rožnjače održava stanje relativne dehidratacije strome (deturgencije), što je ključno za pravilan raspored kolagenih vlakana i transparentnost."
+  },
+  {
+    "question": "Srednji, vaskularni omotač oka (uvea) sastoji se od tri dela. To su sudovnjača (choroidea), cilijarno telo (corpus ciliare) i:",
+    "options": ["Sklera", "Dužica (iris)", "Mrežnjača", "Sočivo"],
+    "correct": 2,
+    "explanation": "Uvea je bogato vaskularizovana i pigmentisana. Iris (dužica) deluje kao blenda mikroskopa i kontroliše količinu svetlosti koja ulazi u oko kroz zenicu (pupilla)."
+  },
+  {
+    "question": "U dužici (iris) se nalaze dva mišića autonomnog nervnog sistema koji regulišu širinu zenice. Koji mišić je pod kontrolom parasimpatikusa i uzrokuje sužavanje zenice (miotic)?",
+    "options": ["m. dilatator pupillae", "m. sphincter pupillae (mišić stezač zenice)", "m. ciliaris", "m. tarsalis"],
+    "correct": 1,
+    "explanation": "m. sphincter pupillae je kružni mišić lociran blizu ivice zenice. Njegova kontrakcija (mioza) štiti mrežnjaču od prevelike svetlosti."
+  },
+  {
+    "question": "Koji mišić dužice je pod kontrolom simpatikusa, ima radijalan raspored ćelija i uzrokuje širenje zenice (midrijazu) u mraku ili tokom stresa?",
+    "options": ["m. sphincter pupillae", "m. dilatator pupillae (mišić širilac zenice)", "m. ciliaris", "m. orbicularis oculi"],
+    "correct": 1,
+    "explanation": "m. dilatator pupillae se sastoji od kontraktilnih produžetaka specifičnih mioepitelnih ćelija pigmentnog sloja dužice. Njegova aktivacija uzrokuje midrijazu."
+  },
+  {
+    "question": "Cilijarno telo (corpus ciliare) ima dvostruku histofiziološku ulogu u oku. To su akomodacija sočiva (preko cilijarnog mišića) i:",
+    "options": ["Lučenje suza", "Produkcija očne vodice (humor aquosus) preko cilijarnih nastavaka", "Sinteza rodopsina", "Apsorpcija staklastog tela"],
+    "correct": 1,
+    "explanation": "Očna vodica se luči u zadnju očnu komoru, prelazi kroz zenicu u prednju komoru i drenira se preko Šlemovog (Schlemm) kanala nazad u venski sistem."
+  },
+  {
+    "question": "Mrežnjača (retina) je unutrašnji, fotosenzitivni omotač oka. Koliko histoloških slojeva ćelija i njihovih produžetaka se uočava u optičkom delu mrežnjače?",
+    "options": ["3 sloja", "6 slojeva", "10 slojeva", "12 slojeva"],
+    "correct": 2,
+    "explanation": "Retina ima izuzetno složenu slojevitu građu koja obuhvata fotoreceptore, bipolarne ćelije, ganglionske ćelije, kao i potporne Milerove (Müller) ćelije."
+  },
+  {
+    "question": "Koji je prvi, najspoljašnji sloj mrežnjače, koji naleže na sudovnjaču, a izgrađen je od jednoslojnog kockastog epitela bogatog granulama melanina koji apsorbuje svetlost i sprečava njeno odbijanje unutar oka?",
+    "options": ["Sloj štapića i čepića", "Pigmentni epitel mrežnjače (stratum pigmentosum)", "Spoljašnji nuklearni sloj", "Ganglionski sloj"],
+    "correct": 1,
+    "explanation": "Pigmentni epitel takođe vrši fagocitozu istrošenih membranskih diskova fotoreceptora i učestvuje u resintezi vidnog pigmenta (retinala)."
+  },
+  {
+    "question": "Fotoreceptori mrežnjače su štapići i čepići. Koje su karakteristike i primarna uloga štapića (cellulae bacilliformes)?",
+    "options": ["Zaduženi su za vid u boji i visoku oštrinu vida na dnevnoj svetlosti", "Ekstremno su osetljivi na svetlost, ima ih oko 120 miliona i zaduženi su za crno-beli vid u uslovima slabog osvetljenja (skotopički vid)", "Luče očnu vodicu", "Nemaju vidni pigment"],
+    "correct": 1,
+    "explanation": "Štapići sadrže vidni pigment rodopsin. Locirani su uglavnom na periferiji mrežnjače i ne omogućavaju razlikovanje boja, već samo registrovanje svetlosti i senki."
+  },
+  {
+    "question": "Čepići (cellulae coniformes) su odgovorni za fotopički vid (vid pri dnevnoj svetlosti). Gde su oni maksimalno koncentrisani na mrežnjači, predstavljajući mesto najveće oštrine vida?",
+    "options": ["Na optičkom disku (slepa mrlja)", "U centralnoj jami (fovea centralis) žute mrlje (macula lutea)", "Na periferiji mrežnjače", "U cilijarnom telu"],
+    "correct": 1,
+    "explanation": "Fovea centralis sadrži isključivo gusto pakovane čepiće, dok su svi ostali slojevi mrežnjače pomereni u stranu kako bi svetlost direktno padala na fotoreceptore."
+  },
+  {
+    "question": "Kako se naziva mesto na mrežnjači gde aksoni ganglionskih ćelija napuštaju oko i formiraju očni živac (n. opticus), a potpuno je lišeno fotoreceptora zbog čega se zove 'slepa mrlja'?",
+    "options": "Fovea centralis",
+    "options": ["Macula lutea", "Optički disk (discus nervi optici)", "Ora serrata", "Limbus"],
+    "correct": 1,
+    "explanation": "Pošto na optičkom disku nema ni štapića ni čepića, svetlost koja padne na ovo mesto ne izaziva vizuelni nadražaj."
+  },
+  {
+    "question": "Očno sočivo (lens) je bikonveksna, providna i elastična struktura bez krvnih sudova. Koji sloj pokriva prednju površinu sočiva, neposredno ispod njegove kapsule?",
+    "options": ["Jednoslojni kockasti subkapsularni epitel", "Pločasto-slojeviti epitel", "Vezivni sloj strome", "Sloj pigmentnih ćelija"],
+    "correct": 0,
+    "explanation": "Ćelije ovog epitela se na ekvatoru sočiva neprekidno dele i izdužuju, gube jedra i organele, transformišući se u zrele sočivne trake (vlakna)."
+  },
+  {
+    "question": "Unutrašnje uvo (auris interna) sastoji se od koštanog i membranskog lavirinta. Koji deo lavirinta, u obliku puževe kućice, sadrži receptor za sluh?",
+    "options": ["Polukružni kanali (canales semicirculares)", "Trema (vestibulum)", "Puž (cochlea)", "Srednje uvo"],
+    "correct": 2,
+    "explanation": "Kohlea je spiralni koštani kanal koji se kod čoveka uvija 2.5 puta oko centralne koštane osovine (modiolus) i sadrži Kortijev organ."
+  },
+  {
+    "question": "Kanal puža je podeljen na tri sprata (skale). Koji je srednji sprat (membranski puž / ductus cochlearis), ispunjen endolifom, u kome se nalazi Kortijev organ?",
+    "options": ["Scala vestibuli", "Scala tympani", "Scala media", "Helicotrema"],
+    "correct": 2,
+    "explanation": "Scala media je membranski puž. Gornji sprat (scala vestibuli) i donji sprat (scala tympani) ispunjeni su perilimfom i spajaju se na vrhu puža kroz otvor helikotremu."
+  },
+  {
+    "question": "Na kojoj se membrani (koja čini pod skale medije) nalazi Kortijev organ, spiralni receptor za sluh?",
+    "options": ["Vestibularnoj (Rajsnerovoj) membrani", "Bazilarnoj (bazalnoj) membrani - lamina basilaris", "Descemetovoj membrani", "Tektorijalnoj membrani"],
+    "correct": 1,
+    "explanation": "Bazilarna membrana vibrira pod uticajem talasa pritiska u perilimfi, što dovodi do pomeranja receptorskih ćelija Kortijevog organa."
+  },
+  {
+    "question": "Koje su receptorske ćelije Kortijevog organa, koje na svojoj apikalnoj površini imaju stereocilije i registruju mehaničke vibracije?",
+    "options": ["Senzorne ćelije sa dlačicama (unutrašnje i spoljašnje trepljaste ćelije)", "Stubaste ćelije", "Falangealne (Deitersove) ćelije", "Potporne ćelije"],
+    "correct": 0,
+    "explanation": "Trepljaste ćelije (hair cells) su mehanoreceptori. Unutrašnjih ima u jednom nizu i zadužene su za sluh, dok su spoljašnje u 3-5 nizova i pojačavaju vibracije."
+  },
+  {
+    "question": "Kako se naziva želatinozna membrana bogata glikoproteinima koja pokriva Kortijev organ odozgo, a u koju su uronjeni vrhovi stereocilija spoljašnjih trepljastih ćelija?",
+    "options": ["Bazilarna membrana", "Tektorijalna (pokrovna) membrana - membrana tectoria", "Rajsnerova membrana", "Otolitna membrana"],
+    "correct": 1,
+    "explanation": "Prilikom vibriranja bazilarne membrane dolazi do smicanja stereocilija u odnosu na fiksiranu tektorijalnu membranu, što otvara mehano-zavisne jonske kanale i generiše nervni impuls."
+  },
+  {
+    "question": "Koji delovi membranskog lavirinta u vestibulumu (tremi) unutrašnjeg uva sadrže makule (pege), receptore za detekciju linearne akceleracije (ubrzanja) i statičke ravnoteže (položaja glave)?",
+    "options": ["Polukružni kanali", "Mešnica (utriculus) i kesica (sacculus)", "Ductus cochlearis", "Srednje uvo"],
+    "correct": 1,
+    "explanation": "Utrikulus prati horizontalno, a sakulus vertikalno kretanje i položaj glave. Receptori u njima sadrže otolitnu membranu sa kristalima kalcijum-karbonata (otoliti)."
+  },
+  {
+    "question": "Koji receptori su locirani u proširenjima (ampulama) tri polukružna kanala unutrašnjeg uva, a zaduženi su za detekciju ugaone (rotacione) akceleracije (npr. okretanje glave)?",
+    "options": ["Makule utrikulusa i sakulusa", "Ampularne kreste (cristae ampullares)", "Kortijev organ", "Kupole belana"],
+    "correct": 1,
+    "explanation": "Ampularne kreste imaju želatinoznu kapu koja se zove kupola (cupola) bez otolita. Kretanje endolife tokom rotacije glave krivi kupolu i stimuliše trepljaste ćelije."
+  },
+  {
+    "question": "Organi urinarnog sistema potiču od koje embrionalne strukture?",
+    "options": ["Paraksijalnog mezoderma", "Intermedijarnog mezoderma (nefrotom)", "Lateralne ploče mezoderma", "Endoderma"],
+    "correct": 1,
+    "explanation": "Intermedijarni mezoderm daje nefrogeni vrpcu iz koje se sukcesivno razvijaju tri sistema bubrega: pronefros, mezonefros i metanefros."
+  },
+  {
+    "question": "Tokom embrionalnog razvoja čoveka javljaju se tri sukcesivna sistema bubrega. Koji od njih predstavlja definitivan, trajan bubreg koji se razvija od 5. nedelje i postaje funkcionalan krajem embrionalnog perioda?",
+    "options": ["Pronefros (prednji bubreg)", "Mezonefros (srednji bubreg)", "Metanefros (stalni bubreg)", "Arhinefros"],
+    "correct": 2,
+    "explanation": "Metanefros ima dvojno poreklo: ureteralni pupoljak (daje sabirni sistem) i metanefrogeni blastem (daje nefrone)."
+  },
+  {
+    "question": "Iz ureteralnog pupoljka (izdanak mezonefrosnog kanala) razvijaju se sledeće strukture permanentnog bubrega:",
+    "options": ["Glomerulusi i podociti", "Proksimalni i distalni tubuli", "Mokraćovod (ureter), bubrežna karlica, velike i male čašice i sabirne cevi", "Henleove petlje"],
+    "correct": 2,
+    "explanation": "Ureteralni pupoljak prodire u metanefrogeni blastem i počinje sukcesivno da se grana, formirajući kompletan sistem za odvođenje urina."
+  },
+  {
+    "question": "Šta se razvija od metanefrogenog blastema (kondenzovanog intermedijarnog mezoderma) pod induktivnim uticajem ureteralnog pupoljka?",
+    "options": ["Sabirne cevi i ureter", "Kompletni nefroni (Baumonova kapsula, proksimalni tubul, Henleova petlja i distalni tubul)", "Bubrežna karlica", "Mokraćna bešika"],
+    "correct": 1,
+    "explanation": "Blastem formira male vezikule koje se izdužuju u tubule u obliku slova S, spajaju se sa granama ureteralnog pupoljka i diferenciraju u funkcionalne delove nefrona."
+  },
+  {
+    "question": "Urinarni sistem i muški reproduktivni sistem dele zajedničko poreklo i rane izvodne kanale. Koji kanal privremeno služi kao urinarni kanal mezonefrosa, a kod muškaraca postaje glavni polni vod (ductus deferens, epididimis)?",
+    "options": ["Milerov (Müller) paramezonefrosni kanal", "Volfov (Wolff) mezonefrosni kanal", "Ureteralni pupoljak", "Alantois"],
+    "correct": 1,
+    "explanation": "Volfov kanal kod muških embriona perzistira pod uticajem testosterona i daje epididimis, semenovod i semene kesice. Kod ženskih embriona on potpuno degeneriše."
+  },
+  {
+    "question": "Koji embrionalni kanali kod ženskog embriona daju jajovode (tubae uterinae), matericu (uterus) i gornji deo vagine, dok kod muškog embriona potpuno degradiraju?",
+    "options": ["Volfovi kanali", "Milerovi (Müller) paramezonefrosni kanali", "Metanefrogeni vrpci", "Urahus"],
+    "correct": 1,
+    "explanation": "Kod muških embriona, Sertolijeve ćelije testisa luče anti-Milerov hormon (AMH) koji uzrokuje potpunu regresiju Milerovih kanala."
+  },
+  {
+    "question": "Iz kog dela embrionalnog kloakalnog regiona (nakon podele urorektalnom pregradom) se razvijaju mokraćna bešika i uretra?",
+    "options": ["Primitivnog urogenitalnog sinusa (sinus urogenitalis)", "Anorektalnog kanala", "Alantoisa", "Metanefrosa"],
+    "correct": 0,
+    "explanation": "Urogenitalni sinus se deli na tri dela; najviši i najveći deo daje mokraćnu bešiku, koja je u kontinuitetu sa alantoisom (kasnije urahus)."
+  },
+  {
+    "question": "U muških embriona, pod uticajem kog hormona (koji se lokalno sintetiše iz testosterona pomoću enzima 5-alfa reduktaze) dolazi do maskulinizacije spoljašnjih genitalija (razvića penisa i skrotuma)?",
+    "options": ["Estrogena", "Dihidrotestosterona (DHT)", "Progesterona", "AMH"],
+    "correct": 1,
+    "explanation": "DHT je androgen sa znatno jačim dejstvom od testosterona. Odsustvo DHT-a ili njegovih receptora dovodi do razvoja ženskih spoljašnjih genitalija uprkos XY hromozomima."
+  },
+  {
+    "question": "Koja je primarna funkcija jukstaglomerularnog aparata (JGA) u bubregu?",
+    "options": ["Filtracija eritrocita", "Regulacija sistemskog krvnog pritiska i volumena krvi kroz sekreciju renina i kontrolu glomerularne filtracije", "Izlučivanje glukoze", "Sinteza eritropoetina"],
+    "correct": 1,
+    "explanation": "JGA je neuroendokrini senzor koji registruje pad pritiska ili pad natrijuma u distalnom tubulu i pokreće RAAS sistem."
+  },
+  {
+    "question": "Kako se naziva prostor između parijetalnog i visceralnog lista Baumonove kapsule u koji se uliva primarni urin odmah nakon filtracije?",
+    "options": ["Lumen kapilara", "Urini (kapsularni) prostor", "Distalni prostor", "Disov prostor"],
+    "correct": 1,
+    "explanation": "Urini prostor prima ultrafiltrat plazme koji odatle direktno prelazi u urinarni pol, odnosno u početni deo proksimalnog izuvijanog tubula."
+  },
+  {
+    "question": "Koje specifične ćelije se nalaze između kapilarnih petlji glomerulusa, pružaju strukturnu potporu kapilarima, imaju kontraktilna svojstva i vrše fagocitozu zarobljenih makromolekula i imunskih kompleksa?",
+    "options": ["Podociti", "Intraglomerularne mezangijalne ćelije", "Ćelije makule dense", "Jukstaglomerularne ćelije"],
+    "correct": 1,
+    "explanation": "Mezangijalne ćelije čiste filtracionu barijeru od imunskih depozita i menjanjem svog tonusa mogu regulisati površinu kapilara dostupnu za filtraciju."
+  },
+
+
+
+
+
+
+
+
+
+  {
+    "question": "Koji su osnovni delovi neurona, funkcionalne jedinice nervnog tkiva?",
+    "options": ["Telo (soma), akson i dendriti", "Čaura, jezgro i citoplazma", "Kapsula, zona i korteks", "Vena, arterija i kapilar"],
+    "correct": 0,
+    "explanation": "Telo neurona sadrži jedro i većinu organela (Nisslova telašca), dendriti primaju signale, a akson provodi signal ka drugim ćelijama."
+  },
+  {
+    "question": "Šta su Nisslova telašca u telu neurona?",
+    "options": ["Mitohondrije", "Hrapavi endoplazmatski retikulum (rER) i slobodni ribozomi za sintezu proteina", "Lizozomi", "Golgijev aparat"],
+    "correct": 1,
+    "explanation": "Nisslova telašca su mesta intenzivne proteinske sinteze neophodne za održavanje i regeneraciju aksona."
+  },
+  {
+    "question": "Koji tip glija ćelija formira mijelinski omotač u centralnom nervnom sistemu (CNS)?",
+    "options": ["Švanove ćelije", "Oligodendrociti", "Astrociti", "Mikroglija"],
+    "correct": 1,
+    "explanation": "Jedan oligodendrocit može mijelinizovati segmente više aksona, za razliku od Švanovih ćelija u PNS-u koje mijelinizuju samo jedan segment jednog aksona."
+  },
+  {
+    "question": "Koja je glavna uloga astrocita u CNS-u?",
+    "options": ["Fagocitoza", "Formiranje krvno-moždane barijere, održavanje jonskog balansa i nutritivna potpora neuronima", "Lučenje mijelina", "Produkcija likvora"],
+    "correct": 1,
+    "explanation": "Astrociti imaju stopice koje obmotavaju kapilare, regulišući šta iz krvi može dospeti do neurona."
+  },
+  {
+    "question": "Koje ćelije CNS-a deluju kao makrofagi i prva su linija odbrane od infekcija i oštećenja tkiva?",
+    "options": ["Oligodendrociti", "Mikroglija", "Astrociti", "Ependimske ćelije"],
+    "correct": 1,
+    "explanation": "Mikroglija potiče iz hematopoetske loze (monocita) i aktivira se pri povredi mozga."
+  },
+  {
+    "question": "Šta oblažu ependimske ćelije u mozgu?",
+    "options": ["Kapilare", "Moždane komore i centralni kanal kičmene moždine", "Akson", "Sinapse"],
+    "correct": 1,
+    "explanation": "Ependimske ćelije su trepljasti epitel koji učestvuje u kretanju likvora (cerebrospinalne tečnosti)."
+  },
+  {
+    "question": "Koja je funkcija mijelinskog omotača?",
+    "options": ["Povećanje brzine provođenja nervnog impulsa saltatornom kondukcijom", "Zaštita od virusa", "Ishrana neurona", "Sinteza neurotransmitera"],
+    "correct": 0,
+    "explanation": "Mijelin izoluje akson, pa se impuls 'preskače' sa jednog Ranvijerovog čvora na drugi, što dramatično ubrzava provodljivost."
+  },
+  {
+    "question": "Šta se nalazi u Ranvijerovim čvorovima (nodusi)?",
+    "options": ["Gomila mijelina", "Visoka koncentracija natrijumskih kanala za generisanje akcionog potencijala", "Jedro aksona", "Švanove ćelije"],
+    "correct": 1,
+    "explanation": "Prekid u mijelinu na čvorovima omogućava regeneraciju akcionog potencijala."
+  },
+  {
+    "question": "Gde se nalaze tela perifernih senzornih neurona (npr. spinalni gangliji)?",
+    "options": ["U kičmenoj moždini", "U ganglijama zadnjih korenova kičmenih živaca", "U mozgu", "U mišićima"],
+    "correct": 1,
+    "explanation": "To su pseudounipolarni neuroni čije telo ima jedan nastavak koji se deli na periferni (receptor) i centralni (sinapsa u CNS-u)."
+  },
+  {
+    "question": "Koji neurotransmiter se najčešće oslobađa na neuromišićnoj ploči kod čoveka?",
+    "options": ["Dopamin", "Acetilholin", "GABA", "Serotonin"],
+    "correct": 1,
+    "explanation": "Acetilholin se vezuje za nikotinske receptore na sarkolemi mišića, izazivajući depolarizaciju."
+  },
+  {
+    "question": "Šta čini sivu masu kičmene moždine?",
+    "options": ["Mijelinizovani aksoni", "Tela neurona, dendriti i ne mijelinizovani delovi aksona", "Krvni sudovi", "Masno tkivo"],
+    "correct": 1,
+    "explanation": "Na poprečnom preseku, siva masa ima oblik slova H ili leptira (zadnji, bočni i prednji rogovi)."
+  },
+  {
+    "question": "Koja je uloga prednjih rogova kičmene moždine?",
+    "options": ["Senzorna obrada", "Sadrže tela motornih neurona koji inervišu skeletne mišiće", "Autonomna kontrola", "Provodljivost bola"],
+    "correct": 1,
+    "explanation": "Aksoni iz ovih neurona izlaze kroz prednji koren i odlaze direktno do mišića."
+  },
+  {
+    "question": "Šta sadrži bela masa kičmene moždine?",
+    "options": ["Samo tela neurona", "Uzlazne i silazne puteve (mijelinizovane aksone)", "Samo ganglije", "Ependimske ćelije"],
+    "correct": 1,
+    "explanation": "Bela boja potiče od masnih kiselina u mijelinu koji obavija snopove aksona (funiculi)."
+  },
+  {
+    "question": "Šta su moždane ovojnice (meninge) od spolja ka unutra?",
+    "options": ["Pia mater, arahnoidea, dura mater", "Dura mater, arahnoidea, pia mater", "Pia mater, dura mater, arahnoidea", "Arahnoidea, dura mater, pia mater"],
+    "correct": 1,
+    "explanation": "Dura mater je spoljašnja, čvrsta; arahnoidea je srednja, paučinasta; pia mater je unutrašnja, meka i vaskularizovana."
+  },
+  {
+    "question": "Šta se nalazi u subarahnoidalnom prostoru?",
+    "options": ["Likvor (cerebrospinalna tečnost)", "Masno tkivo", "Vazduh", "Krvne ćelije"],
+    "correct": 0,
+    "explanation": "Ovaj prostor je ispunjen likvorom koji služi kao amortizer za mozak."
+  },
+  {
+    "question": "Koji deo mozga (cortex cerebri) ima najviše slojeva i zadužen je za više kognitivne funkcije?",
+    "options": ["Alokorteks", "Neokorteks (ima 6 slojeva)", "Cerebelum", "Medulla oblongata"],
+    "correct": 1,
+    "explanation": "Neokorteks čini oko 90% moždane kore kod ljudi."
+  },
+  {
+    "question": "Koje ćelije korteksa velikog mozga su glavni izlazni neuroni (eferentni)?",
+    "options": ["Granularne ćelije", "Piramidalne ćelije", "Zvezdaste ćelije", "Horizontalne ćelije"],
+    "correct": 1,
+    "explanation": "Piramidalne ćelije imaju dugačke aksone koji projektuju izvan korteksa u druge delove mozga ili kičmene moždine."
+  },
+  {
+    "question": "Koji deo mozga je zadužen za koordinaciju pokreta i održavanje ravnoteže?",
+    "options": ["Cerebelum (mali mozak)", "Hipotalamus", "Talamus", "Pons"],
+    "correct": 0,
+    "explanation": "Cerebelum prima informacije iz proprioceptora i ravnotežnog sistema, te koriguje motorne komande."
+  },
+  {
+    "question": "Koje su najveće i najprepoznatljivije ćelije u korteksu malog mozga?",
+    "options": ["Piramidalne ćelije", "Purkinjeove ćelije", "Granularne ćelije", "Košaraste ćelije"],
+    "correct": 1,
+    "explanation": "Purkinjeove ćelije imaju ogromno, lepezasto dendritsko stablo koje prima sinapse iz čitavog malog mozga."
+  },
+  {
+    "question": "Šta formira barijeru krv-mozak (BBB)?",
+    "options": ["Fenestrirani kapilari", "Kontinuirani kapilari sa čvrstim spojevima i stopice astrocita", "Slobodna difuzija", "Limfni sudovi"],
+    "correct": 1,
+    "explanation": "Ovo sprečava toksine i mnoge patogene da pređu iz krvi u moždano tkivo."
+  },
+  {
+    "question": "Kako se zove hormon štitaste žlezde koji snižava nivo kalcijuma u krvi?",
+    "options": ["Tiroksin", "Kalcitonin", "Trijodtironin", "Parathormon"],
+    "correct": 1,
+    "explanation": "Luče ga parafolikularne (C) ćelije štitaste žlezde."
+  },
+  {
+    "question": "Šta luče paraštitaste (paratiroidne) žlezde?",
+    "options": ["Parathormon (PTH)", "Insulin", "Glukagon", "Aldosteron"],
+    "correct": 0,
+    "explanation": "PTH podiže nivo kalcijuma u krvi delovanjem na kosti, bubrege i creva."
+  },
+  {
+    "question": "Koji je antagonistički efekat parathormona?",
+    "options": ["Insulin", "Kalcitonin", "Adrenalin", "Kortizol"],
+    "correct": 1,
+    "explanation": "Parathormon podiže kalcijum, kalcitonin ga spušta."
+  },
+  {
+    "question": "Zona glomerulosa kore nadbubrežne žlezde luči:",
+    "options": ["Kortizol", "Aldosteron", "Androgene", "Adrenalin"],
+    "correct": 1,
+    "explanation": "Aldosteron (mineralokortikoid) reguliše nivo natrijuma i kalijuma."
+  },
+  {
+    "question": "Zona fasciculata kore nadbubrežne žlezde luči:",
+    "options": ["Aldosteron", "Kortizol (glukokortikoid)", "Testosteron", "Progesteron"],
+    "correct": 1,
+    "explanation": "Kortizol kontroliše metabolizam glukoze i stresni odgovor."
+  },
+  {
+    "question": "Zona reticularis kore nadbubrežne žlezde luči:",
+    "options": ["Kortizol", "Slabe androgene (DHEA)", "Adrenalin", "Aldosteron"],
+    "correct": 1,
+    "explanation": "Ovi androgeni su prekursori za polne hormone."
+  },
+  {
+    "question": "Šta luči epifiza (pinealna žlezda)?",
+    "options": ["Melatonin", "Serotonin", "Dopamin", "Noradrenalin"],
+    "correct": 0,
+    "explanation": "Melatonin reguliše cirkadijalni ritam (spavanje/budnost)."
+  },
+  {
+    "question": "Šta su ciljne ćelije hormona?",
+    "options": ["Sve ćelije tela", "Ćelije koje imaju specifične receptore za taj hormon", "Samo ćelije jetre", "Samo mišićne ćelije"],
+    "correct": 1,
+    "explanation": "Hormon 'putuje' krvlju, ali deluje samo tamo gde postoji odgovarajući 'ključ' (receptor)."
+  },
+  {
+    "question": "Hipofiza se sastoji iz dva funkcionalno različita dela:",
+    "options": ["Prednjeg (adenohipofiza) i zadnjeg (neurohipofiza)", "Kore i srži", "Parenhima i strome", "Gornjeg i donjeg dela"],
+    "correct": 0,
+    "explanation": "Adenohipofiza je glandularno tkivo, a neurohipofiza je produžetak hipotalamusa."
+  },
+  {
+    "question": "Neurohipofiza skladišti i luči dva hormona koja sintetiše hipotalamus. Koji su to hormoni?",
+    "options": ["TSH i ACTH", "Oksitocin i Antidiuretski hormon (ADH/vazopresin)", "FSH i LH", "STH i Prolaktin"],
+    "correct": 1,
+    "explanation": "Oksitocin deluje na matericu i dojku, ADH na bubrege."
+  },
+  {
+    "question": "Koji hormon adenohipofize stimuliše sintezu i lučenje hormona štitaste žlezde?",
+    "options": ["TSH (tirotropin)", "ACTH", "FSH", "LH"],
+    "correct": 0,
+    "explanation": "TSH vezuje se za receptore na folikularnim ćelijama tiroeideje."
+  },
+  {
+    "question": "Prolaktin je hormon adenohipofize zadužen za:",
+    "options": ["Rast kostiju", "Sintezu mleka u mlečnoj žlezdi", "Kontrolu štitnjače", "Kontrolu nadbubrežne žlezde"],
+    "correct": 1,
+    "explanation": "Prolaktin podstiče laktaciju nakon porođaja."
+  },
+  {
+    "question": "Koji hormon adenohipofize stimuliše koru nadbubrežne žlezde da luči kortizol?",
+    "options": ["TSH", "ACTH (adrenokortikotropni hormon)", "FSH", "STH"],
+    "correct": 1,
+    "explanation": "ACTH je ključan za odgovor na stres."
+  },
+  {
+    "question": "FSH i LH su gonadotropini adenohipofize. Šta oni stimulišu kod žena?",
+    "options": ["Rast dlaka", "Ovarijalni ciklus i ovulaciju", "Metabolizam kostiju", "Rad bubrega"],
+    "correct": 1,
+    "explanation": "FSH podstiče rast folikula, a LH izaziva ovulaciju i formiranje žutog tela."
+  },
+  {
+    "question": "Šta je funkcija STH (hormona rasta)?",
+    "options": ["Stimulacija rasta tkiva (naročito kostiju i mišića) i metabolizma proteina", "Kontrola apetita", "Regulacija boje kože", "Smanjenje šećera"],
+    "correct": 0,
+    "explanation": "STH deluje direktno na ćelije i indirektno preko IGF-1 (insulin-like growth factor)."
+  },
+  {
+    "question": "Koja je osnovna jedinica pluća za gasnu razmenu?",
+    "options": ["Bronhija", "Alveola", "Bronhiola", "Dušnik"],
+    "correct": 1,
+    "explanation": "Alveole omogućavaju difuziju kiseonika u krv i ugljen-dioksida iz krvi."
+  },
+  {
+    "question": "Šta je surfaktant i zašto je važan?",
+    "options": ["Enzim za varenje", "Supstanca koja smanjuje površinski napon u alveolama i sprečava kolaps", "Protein u krvi", "Hormon u nosu"],
+    "correct": 1,
+    "explanation": "Bez surfaktanta, zidovi alveola bi se zalepili jedan za drugi pri izdisaju."
+  },
+  {
+    "question": "Koje ćelije luče surfaktant?",
+    "options": ["Pneumociti tip I", "Pneumociti tip II", "Alveolarni makrofagi", "Klara ćelije"],
+    "correct": 1,
+    "explanation": "Pneumociti tip II su kubične ćelije koje sintetizuju fosfolipide surfaktanta."
+  },
+  {
+    "question": "Koja je uloga alveolarnih makrofaga?",
+    "options": ["Razmena gasova", "Fagocitoza čestica prašine i bakterija u alveolama", "Sekrecija hormona", "Produkcija surfaktanta"],
+    "correct": 1,
+    "explanation": "Oni su 'čistači' pluća koji putuju ka bronhijama odakle bivaju izbačeni sa sekretom (sputum)."
+  },
+  {
+    "question": "Šta je respiratrorna membrana (barijera)?",
+    "options": ["Sloj sluzi u nosu", "Tanka barijera (endotel kapilara + bazalna lamina + pneumocit tip I) između vazduha i krvi", "Hrskavica traheje", "Mišić bronhiola"],
+    "correct": 1,
+    "explanation": "Gasovi difunduju kroz ovu barijeru u deliću sekunde."
+  },
+  {
+    "question": "Koje epitel oblaže najveći deo disajnih puteva?",
+    "options": ["Višeredni trepljasti cilindrični epitel sa peharastim ćelijama", "Pločasto-slojeviti epitel", "Jednoslojni pločasti", "Prelazni epitel"],
+    "correct": 0,
+    "explanation": "Ovaj epitel vlaži vazduh i čisti ga od čestica."
+  },
+  {
+    "question": "Koja je uloga peharastih ćelija u disajnim putevima?",
+    "options": ["Produkcija hormona", "Lučenje mukusa (sluzi) za zarobljavanje nečistoća", "Regulacija protoka vazduha", "Sinteza energije"],
+    "correct": 1,
+    "explanation": "Sluz koju luče peharaste ćelije treplje pomeraju ka ždrelu."
+  },
+  {
+    "question": "Šta su Klara (Club) ćelije?",
+    "options": ["Ćelije bronhiola koje luče sekret, detoksikuju materije i imaju regenerativnu ulogu", "Ćelije alveola", "Ćelije traheje", "Ćelije nosa"],
+    "correct": 0,
+    "explanation": "Klara ćelije dominiraju u bronhiolama."
+  },
+  {
+    "question": "Kako se menja količina hrskavice od traheje do bronhiola?",
+    "options": ["Povećava se", "Smanjuje se, a zatim potpuno nestaje", "Ne menja se", "Postaje kompaktnija"],
+    "correct": 1,
+    "explanation": "Bronhiole nemaju hrskavicu, njihov promer održava glatki mišić."
+  },
+  {
+    "question": "Šta je pleura?",
+    "options": ["Zid bronhije", "Serozna opna koja oblaže pluća (visceralna) i grudni koš (parijetalna)", "Sloj sluzi", "Hrskavičavi prsten"],
+    "correct": 1,
+    "explanation": "Pleuralna tečnost u prostoru između listova omogućava plućima da klize tokom disanja."
+  },
+  {
+    "question": "Gde se nalazi centar za kontrolu disanja?",
+    "options": ["U kori velikog mozga", "U produženoj moždini i ponsu", "U malom mozgu", "U kičmenoj moždini"],
+    "correct": 1,
+    "explanation": "Ovaj centar automatski reguliše ritam disanja prema nivou CO2 i pH krvi."
+  },
+  {
+    "question": "Koji je glavni sastojak žuči (izlučevine jetre)?",
+    "options": ["Enzimi za varenje proteina", "Žučne soli, bilirubin i holesterol", "Hormoni", "Glukoza"],
+    "correct": 1,
+    "explanation": "Žučne soli su ključne za emulgovanje masti u crevima."
+  },
+  {
+    "question": "Koji deo probavnog sistema ima najduže resice (villi)?",
+    "options": ["Želudac", "Tanko crevo (naročito duodenum i jejunum)", "Debelo crevo", "Jednjak"],
+    "correct": 1,
+    "explanation": "Resice drastično povećavaju apsorpcionu površinu tankog creva."
+  },
+  {
+    "question": "Šta su Brunerove (Brunner) žlezde i gde se nalaze?",
+    "options": ["U jednjaku; luče kiselinu", "U dvanaestopalačnom crevu (duodenumu); luče alkalni sekret za neutralizaciju želudačne kiseline", "U želucu; luče pepsin", "U debelom crevu"],
+    "correct": 1,
+    "explanation": "Ovaj sekret štiti duodenum od kisele himusa koji dolazi iz želuca."
+  },
+  {
+    "question": "Šta su Pajerove (Peyer) ploče?",
+    "options": ["Grupe limfnih folikula u zidu ileuma (donji deo tankog creva)", "Žlezde za varenje masti", "Delovi jetre", "Koštane strukture"],
+    "correct": 0,
+    "explanation": "Pajerove ploče su deo MALT-a (imunskog sistema creva)."
+  },
+  {
+    "question": "Koja je glavna funkcija debelog creva?",
+    "options": ["Varenje proteina", "Apsorpcija vode i elektrolita i formiranje fecesa", "Sinteza hormona", "Apsorpcija većine masti"],
+    "correct": 1,
+    "explanation": "Debelo crevo nema resice i ima mnogo peharastih ćelija za podmazivanje fecesa."
+  },
+  {
+    "question": "Kako se naziva epitel tankog creva?",
+    "options": ["Jednoslojni cilindrični sa resicama i peharastim ćelijama", "Slojeviti pločasti", "Prelazni", "Višeredni"],
+    "correct": 0,
+    "explanation": "Mikrovili (četkasta ivica) na ovim ćelijama sadrže enzime za varenje."
+  },
+  {
+    "question": "Šta luče glavne (chief) ćelije želuca?",
+    "options": ["Hlorovodoničnu kiselinu (HCl)", "Pepsinogen (proenzim)", "Mukus", "Gastrin"],
+    "correct": 1,
+    "explanation": "Pepsinogen se u kiseloj sredini želuca aktivira u pepsin."
+  },
+  {
+    "question": "Šta luče parijetalne ćelije želuca?",
+    "options": ["Pepsinogen", "HCl i intrinzični faktor (za apsorpciju vitamina B12)", "Mukus", "Hormone"],
+    "correct": 1,
+    "explanation": "HCl denaturiše proteine i ubija bakterije."
+  },
+  {
+    "question": "Šta su kripti (Lieberkühnove žlezde)?",
+    "options": ["Udubljenja u sluzokoži tankog creva između resica", "Glavni kanali pankreasa", "Prostori u jetri", "Udubljenja u nosu"],
+    "correct": 0,
+    "explanation": "U dnu kripti se nalaze stem (matične) ćelije creva."
+  },
+  {
+    "question": "Koja je funkcija Panetovih (Paneth) ćelija u tankom crevu?",
+    "options": ["Varenje", "Sekrecija antimikrobnih peptida (lizozima) za zaštitu stem ćelija", "Apsorpcija masti", "Lučenje hormona"],
+    "correct": 1,
+    "explanation": "One su deo urođenog imunskog sistema creva."
+  },
+  {
+    "question": "Koja je osnovna strukturna jedinica jetre?",
+    "options": ["Lobulus jetre (heksagonalni)", "Nefron", "Acinus", "Ostrvce"],
+    "correct": 0,
+    "explanation": "Lobulus se sastoji od hepatocita raspoređenih oko centralne vene."
+  },
+  {
+    "question": "Šta je portalna trijada u jetri?",
+    "options": ["Tri centralne vene", "Ogranak arterije hepatike, vene porte i žučnog kanalića", "Tri grupe hepatocita", "Tri arterije"],
+    "correct": 1,
+    "explanation": "Krv iz portne vene i arterije se meša u sinusoidima jetre."
+  },
+  {
+    "question": "Šta su Kupferove (Kupffer) ćelije?",
+    "options": ["Hepatociti", "Makrofagi jetre u sinusoidima", "Ćelije za skladištenje masti", "Epitelne ćelije kanalića"],
+    "correct": 1,
+    "explanation": "One uklanjaju stare eritrocite i bakterije iz krvi."
+  },
+  {
+    "question": "Šta luči egzokrini pankreas?",
+    "options": ["Insulin", "Digestivne enzime (tripsin, amilaza, lipaza) i bikarbonate", "Glukagon", "Somatostatin"],
+    "correct": 1,
+    "explanation": "Ovi enzimi se luče u duodenum."
+  },
+  {
+    "question": "Koje ćelije pankreasa luče bikarbonate?",
+    "options": ["Acinusne ćelije", "Centroacinusne i duktalne ćelije", "Alfa ćelije", "Beta ćelije"],
+    "correct": 1,
+    "explanation": "Bikarbonati neutrališu želudačnu kiselinu u tankom crevu."
+  },
+  {
+    "question": "Koji hormon stimuliše oslobađanje enzima pankreasa?",
+    "options": ["Gastrin", "Holecistokinin (CCK)", "Insulin", "Adrenalin"],
+    "correct": 1,
+    "explanation": "CCK luči duodenum u odgovoru na masnu hranu."
+  },
+  {
+    "question": "Šta je sekretin?",
+    "options": ["Hormon koji stimuliše pankreas na lučenje bikarbonata", "Enzim za varenje", "Žučna so", "Sastojak želudačnog soka"],
+    "correct": 0,
+    "explanation": "Sekretin se luči kada kiselina dospe u duodenum."
+  },
+  {
+    "question": "Gde se nalazi žučna kesa (vesica fellea)?",
+    "options": ["U pankreasu", "Na donjoj površini jetre", "Pored želuca", "U slezini"],
+    "correct": 1,
+    "explanation": "Žučna kesa skladišti i koncentriše žuč."
+  },
+  {
+    "question": "Kako se naziva proces stvaranja spermatozoida?",
+    "options": ["Oogeneza", "Spermatogeneza", "Fertilizacija", "Ovulacija"],
+    "correct": 1,
+    "explanation": "Odigrava se u semenim cevčicama testisa."
+  },
+  {
+    "question": "Gde se nalaze Lejdigove ćelije?",
+    "options": ["Unutar semenih cevčica", "U intersticijumu (između cevčica) testisa", "U epididimisu", "U prostati"],
+    "correct": 1,
+    "explanation": "One luče testosteron."
+  },
+  {
+    "question": "Šta je akrozom?",
+    "options": ["Rep spermatozoida", "Lizozom sa enzimima na glavi spermatozoida", "Telo spermatozoida", "Mitohondrija"],
+    "correct": 1,
+    "explanation": "Pomaže spermatozoidu da penetrira kroz omotače jajne ćelije."
+  },
+  {
+    "question": "Šta je epididimis?",
+    "options": ["Testis", "Mesto sazrevanja i skladištenja spermatozoida", "Mokraćna bešika", "Prostata"],
+    "correct": 1,
+    "explanation": "Spermatozoidi ovde postaju pokretni."
+  },
+  {
+    "question": "Šta luči prostata?",
+    "options": ["Testosteron", "Bistru tečnost bogatu limunskom kiselinom i PSA", "Spermatozoide", "Bikarbonate"],
+    "correct": 1,
+    "explanation": "Ovaj sekret čini značajan deo zapremine ejakulata."
+  },
+  {
+    "question": "Šta je oogeneza?",
+    "options": ["Stvaranje spermatozoida", "Stvaranje jajnih ćelija", "Razvoj embriona", "Sazrevanje placente"],
+    "correct": 1,
+    "explanation": "Počinje pre rođenja žene, ali se završava tek pri oplodnji."
+  },
+  {
+    "question": "Šta je folikul jajnika?",
+    "options": ["Jajovod", "Kompleks jajne ćelije okružene folikularnim ćelijama", "Materica", "Vagina"],
+    "correct": 1,
+    "explanation": "Folikuli rastu i sazrevaju tokom menstrualnog ciklusa."
+  },
+  {
+    "question": "Šta je ovulacija?",
+    "options": ["Menstruacija", "Oslobađanje sekundarne oocite iz dominantnog folikula (Graafov folikul)", "Začeće", "Menopauza"],
+    "correct": 1,
+    "explanation": "Obično se dešava sredinom ciklusa."
+  },
+  {
+    "question": "Šta je žuto telo (corpus luteum)?",
+    "options": ["Propali folikul", "Endokrina žlezda nastala od folikula nakon ovulacije, luči progesteron", "Jajovod", "Materica"],
+    "correct": 1,
+    "explanation": "Progesteron priprema matericu za trudnoću."
+  },
+  {
+    "question": "Gde se obično dešava oplodnja?",
+    "options": ["U materici", "U jajovodu (tuba uterina)", "U jajniku", "U vagini"],
+    "correct": 1,
+    "explanation": "Spermatozoid se susreće sa jajnom ćelijom najčešće u ampuli jajovoda."
+  },
+  {
+    "question": "Koja tri sloja čine zid materice?",
+    "options": ["Endometrijum, miometrijum, perimetrijum", "Kora, srž, kapsula", "Epitela, vezivo, mišić", "Sluzokoža, podsluzokoža, mišić"],
+    "correct": 0,
+    "explanation": "Endometrijum je unutrašnji, miometrijum srednji (mišićni), perimetrijum spoljašnji (serozni)."
+  },
+  {
+    "question": "Šta se dešava sa endometrijumom tokom menstruacije?",
+    "options": ["Povećava debljinu", "Odbacuje se funkcionalni sloj (stratum functionale)", "Luči hormone", "Postaje otporan na infekcije"],
+    "correct": 1,
+    "explanation": "Ako nema trudnoće, pad hormona dovodi do ljuštenja ovog sloja."
+  },
+  {
+    "question": "Šta je placneta?",
+    "options": ["Deo majke", "Privremeni organ za razmenu hranljivih materija, gasova i otpada između majke i fetusa", "Jajovod", "Materica"],
+    "correct": 1,
+    "explanation": "Placenta ima fetalnu i majčinu komponentu."
+  },
+  {
+    "question": "Šta luči posteljica (placenta)?",
+    "options": ["HCG (humani horionski gonadotropin), progesteron, estrogen", "Tiroksin", "Insulin", "Testosteron"],
+    "correct": 0,
+    "explanation": "HCG održava žuto telo u ranoj trudnoći."
+  },
+  {
+    "question": "Gde se nalazi mokraćna bešika?",
+    "options": ["U karlici", "U trbušnoj duplji", "U grudnom košu", "U testisu"],
+    "correct": 0,
+    "explanation": "Ona je rezervoar urina."
+  },
+  {
+    "question": "Koji epitel oblaže mokraćnu bešiku?",
+    "options": ["Pločasto-slojeviti", "Prelazni epitel (urotel)", "Cilindrični", "Kockasti"],
+    "correct": 1,
+    "explanation": "Urotel omogućava rastezanje bešike bez pucanja."
+  },
+  {
+    "question": "Šta je uretra?",
+    "options": ["Ureter (mokraćovod)", "Kanal koji odvodi urin iz bešike van tela", "Kanal iz bubrega", "Kanal iz testisa"],
+    "correct": 1,
+    "explanation": "Muška uretra je znatno duža od ženske."
+  },
+  {
+    "question": "Gde se nalazi bubreg?",
+    "options": ["Retroperitonealno u lumbalnom predelu", "U grudnom košu", "U karlici", "Na vratu"],
+    "correct": 0,
+    "explanation": "Bubreg je obavijen masnom kapsulom radi zaštite."
+  },
+  {
+    "question": "Šta čini nefron?",
+    "options": ["Samo glomerulus", "Bubrežno telo (glomerulus + kapsula) i sistem tubula", "Samo karlica", "Samo sabirne cevi"],
+    "correct": 1,
+    "explanation": "Nefron je funkcionalna jedinica bubrega."
+  },
+  {
+    "question": "Šta je glomerulus?",
+    "options": ["Tubul", "Klupko kapilara za filtraciju krvi", "Sabirna cev", "Karlica"],
+    "correct": 1,
+    "explanation": "Krv iz aferentne arteriole ulazi u glomerulus."
+  },
+  {
+    "question": "Šta je filtraciona barijera?",
+    "options": ["Endotel kapilara, bazalna lamina, podociti (visceralni list kapsule)", "Sloj sluzi", "Mišić", "Koža"],
+    "correct": 0,
+    "explanation": "Ova barijera sprečava gubitak proteina i ćelija u urin."
+  },
+  {
+    "question": "Šta radi proksimalni izuvijani tubul?",
+    "options": ["Reapsorbuje većinu vode, jona, glukoze i aminokiselina", "Luči urin", "Filtrira krv", "Podiže krvni pritisak"],
+    "correct": 0,
+    "explanation": "Ima četkastu ivicu za maksimalnu apsorpciju."
+  },
+  {
+    "question": "Šta radi Henleova petlja?",
+    "options": ["Koncentriše urin koristeći protivstrujni mehanizam", "Filtrira krv", "Stvara glukozu", "Luči hormone"],
+    "correct": 0,
+    "explanation": "Spušta se u medulu gde je visok osmotski pritisak."
+  },
+  {
+    "question": "Šta radi distalni izuvijani tubul?",
+    "options": ["Fino podešava sastav urina (Na, K, pH) pod uticajem aldosterona", "Filtrira krv", "Apsorbuje većinu glukoze", "Skladišti urin"],
+    "correct": 0,
+    "explanation": "Osetljiv je na hormonsku regulaciju."
+  },
+  {
+    "question": "Šta luče jukstaglomerularne (JG) ćelije?",
+    "options": ["Renin", "Eritropoetin", "Insulin", "Adrenalin"],
+    "correct": 0,
+    "explanation": "Renin pokreće sistem za povišenje krvnog pritiska."
+  },
+  {
+    "question": "Šta radi eritropoetin?",
+    "options": ["Stimuliše produkciju eritrocita u koštanoj srži", "Smanjuje pritisak", "Vri urin", "Povećava glukozu"],
+    "correct": 0,
+    "explanation": "Luče ga intersticijske ćelije bubrega pri hipoksiji."
+  },
+  {
+    "question": "Koja je funkcija kože?",
+    "options": ["Samo zaštita", "Zaštita, termoregulacija, čulo, ekskrecija", "Varenje", "Pokret"],
+    "correct": 1,
+    "explanation": "Koža je složen organ sa višestrukim funkcijama."
+  },
+  {
+    "question": "Šta čini epidermis?",
+    "options": ["Slojeviti pločasti orožali epitel", "Vezivno tkivo", "Mišići", "Nervi"],
+    "correct": 0,
+    "explanation": "Stalno se obnavlja od bazalnog sloja."
+  },
+  {
+    "question": "Šta su melanociti?",
+    "options": ["Ćelije koje luče melanin (pigment) za zaštitu od UV zračenja", "Ćelije imunskog sistema", "Receptori za dodir", "Matične ćelije"],
+    "correct": 0,
+    "explanation": "Locirani su u bazalnom sloju epidermisa."
+  },
+  {
+    "question": "Šta su Langerhansove ćelije?",
+    "options": ["Imunske ćelije (makrofagi) epidermisa", "Melanociti", "Receptori", "Keratinociti"],
+    "correct": 0,
+    "explanation": "Prezentuju antigene T-limfocitima."
+  },
+  {
+    "question": "Šta čini dermis?",
+    "options": ["Gusto vezivno tkivo sa krvnim sudovima, žlezdama i nervima", "Samo epitel", "Samo masti", "Samo kosti"],
+    "correct": 0,
+    "explanation": "Dermis daje koži čvrstinu i elastičnost."
+  },
+  {
+    "question": "Šta su ekrine znojne žlezde?",
+    "options": ["Žlezde za termoregulaciju (znojenje)", "Loine žlezde", "Mlečne žlezde", "Pljuvačne žlezde"],
+    "correct": 0,
+    "explanation": "Luče znoj direktno na površinu kože."
+  },
+  {
+    "question": "Šta su apokrine znojne žlezde?",
+    "options": ["Žlezde u pazuhu i preponama koje luče masniji znoj", "Žlezde za termoregulaciju", "Loine žlezde", "Mlečne žlezde"],
+    "correct": 0,
+    "explanation": "Aktiviraju se u pubertetu pod uticajem hormona."
+  },
+  {
+    "question": "Gde se nalaze Pacinijeva telašca?",
+    "options": ["U dermisu/hipodermisu (detektuju pritisak i vibracije)", "U epidermisu", "U oku", "U uhu"],
+    "correct": 0,
+    "explanation": "Imaju karakterističan izgled presečenog luka."
+  },
+  {
+    "question": "Gde se nalaze Mejsnerova telašca?",
+    "options": ["U papilama dermisa (detektuju fini dodir)", "U hipodermisu", "U kosi", "U noktima"],
+    "correct": 0,
+    "explanation": "Najbrojnija su na vrhovima prstiju."
+  },
+  {
+    "question": "Šta je oko?",
+    "options": ["Čulni organ za vid", "Organ za sluh", "Organ za miris", "Organ za ravnotežu"],
+    "correct": 0,
+    "explanation": "Oko pretvara svetlosne draži u nervne impulse."
+  },
+  {
+    "question": "Koji su omotači oka?",
+    "options": ["Fibrozni, vaskularni (uvea) i unutrašnji (retina)", "Samo retina", "Samo sklera", "Samo rožnjača"],
+    "correct": 0,
+    "explanation": "Svaki sloj ima posebnu funkciju (zaštita, ishrana, čulo)."
+  },
+  {
+    "question": "Šta je rožnjača (cornea)?",
+    "options": ["Prednji providni deo fibroznog omotača", "Sklera", "Mrežnjača", "Sočivo"],
+    "correct": 0,
+    "explanation": "Ona lomi svetlost pre nego što uđe u oko."
+  },
+  {
+    "question": "Šta je sklera?",
+    "options": ["Beonjača (neprovidni deo fibroznog omotača)", "Iris", "Rožnjača", "Staklasto telo"],
+    "correct": 0,
+    "explanation": "Daje čvrstinu oku."
+  },
+  {
+    "question": "Šta radi iris (dužica)?",
+    "options": ["Kontroliše količinu svetlosti koja ulazi u oko (zenicu)", "Lomi svetlost", "Skladišti suze", "Registruje boje"],
+    "correct": 0,
+    "explanation": "Sadrži mišiće koji šire i skupljaju zenicu."
+  },
+  {
+    "question": "Šta su štapići?",
+    "options": ["Fotoreceptori za vid u uslovima slabog svetla (crno-beli)", "Receptori za boje", "Ćelije rožnjače", "Mišići"],
+    "correct": 0,
+    "explanation": "Osetljiviji su od čepića."
+  },
+  {
+    "question": "Šta su čepići?",
+    "options": ["Fotoreceptori za vid u boji i oštrinu (dnevni vid)", "Receptori za zvuk", "Ćelije za suze", "Mišići"],
+    "correct": 0,
+    "explanation": "Najgušći su u fovei centralis."
+  },
+  {
+    "question": "Šta je žuta mrlja (macula lutea)?",
+    "options": ["Mesto na mrežnjači sa najvećom koncentracijom čepića", "Slepa mrlja", "Zenica", "Sočivo"],
+    "correct": 0,
+    "explanation": "Omogućava najjasniji vid."
+  },
+  {
+    "question": "Šta je slepa mrlja?",
+    "options": ["Optički disk (izlazak očnog živca, nema receptora)", "Žuta mrlja", "Sočivo", "Zenica"],
+    "correct": 0,
+    "explanation": "Na tom mestu ne možemo videti sliku."
+  },
+  {
+    "question": "Šta radi sočivo (lens)?",
+    "options": ["Fokusira svetlost na mrežnjaču (akomodacija)", "Luči suze", "Štiti oko", "Registruje svetlost"],
+    "correct": 0,
+    "explanation": "Menja oblik pod uticajem cilijarnog mišića."
+  },
+  {
+    "question": "Šta je unutrašnje uvo?",
+    "options": ["Organ za sluh i ravnotežu (kohlea i vestibul)", "Samo slušni kanal", "Samo bubna opna", "Srednje uvo"],
+    "correct": 0,
+    "explanation": "Sadrži Kortijev organ i polukružne kanale."
+  },
+  {
+    "question": "Šta je Kortijev organ?",
+    "options": ["Receptor za sluh u kohlei", "Centar za ravnotežu", "Deo srednjeg uva", "Deo mozga"],
+    "correct": 0,
+    "explanation": "Pretvara zvučne vibracije u nervne impulse."
+  },
+  {
+    "question": "Šta detektuju polukružni kanali?",
+    "options": ["Ugaonu akceleraciju (rotaciju glave)", "Zvuk", "Pritisak", "Boje"],
+    "correct": 0,
+    "explanation": "Sadrže ampularne kreste."
+  },
+  {
+    "question": "Šta su utrikulus i sakulus?",
+    "options": ["Delovi vestibuluma za statičku ravnotežu i linearnu akceleraciju", "Delovi kohlee", "Delovi srednjeg uva", "Delovi mozga"],
+    "correct": 0,
+    "explanation": "Sadrže otolitičke membrane."
+  },
+  {
+    "question": "Koja je uloga srednjeg uva?",
+    "options": ["Prenos zvučnih vibracija od bubne opne do unutrašnjeg uva preko koščica (čekić, nakovanj, uzengija)", "Registracija zvuka", "Ravnoteža", "Sinteza suza"],
+    "correct": 0,
+    "explanation": "Koščice pojačavaju zvučni pritisak."
+  },
+  {
+    "question": "Kako se zove kanal koji povezuje srednje uvo sa ždrelom?",
+    "options": ["Eustahijeva tuba", "Ureter", "Traheja", "Jednjak"],
+    "correct": 0,
+    "explanation": "Omogućava izjednačavanje pritiska sa obe strane bubne opne."
+  },
+  {
+    "question": "Koja je funkcija bubne opne?",
+    "options": ["Pretvara zvučne talase u mehaničke vibracije", "Proizvodi zvuk", "Skladišti mast", "Štiti od infekcija"],
+    "correct": 0,
+    "explanation": "Ona je granica između spoljašnjeg i srednjeg uva."
+  },
+  {
+    "question": "Šta je mirisni epitel?",
+    "options": ["Region u krovu nosne šupljine sa receptorima za miris", "Epitel jezika", "Epitel ždrela", "Epitel dušnika"],
+    "correct": 0,
+    "explanation": "Mirisni neuroni su bipolarni neuroni koji direktno šalju akson u mozak (bulbus olfactorius)."
+  },
+  {
+    "question": "Gde se nalaze receptori za ukus?",
+    "options": ["U gustativnim pupoljcima na jeziku", "U nosu", "U oku", "U uhu"],
+    "correct": 0,
+    "explanation": "Prepoznaju pet osnovnih ukusa: slatko, slano, kiselo, gorko i umami."
+  },
+  {
+    "question": "Šta su tonzile (krajnici)?",
+    "options": ["Limfoidni organi u ždrelu", "Endokrine žlezde", "Zubi", "Pljuvačne žlezde"],
+    "correct": 0,
+    "explanation": "Čine prvu liniju imunske odbrane na ulazu u disajni i digestivni trakt."
+  },
+  {
+    "question": "Šta je bazalna membrana epitela?",
+    "options": ["Specijalizovana struktura između epitela i vezivnog tkiva", "Mišić", "Krvni sud", "Nerv"],
+    "correct": 0,
+    "explanation": "Obezbeđuje potporu i filtraciju."
+  },
+  {
+    "question": "Koja je razlika između egzokrinih i endokrinih žlezda?",
+    "options": ["Egzokrine imaju kanale (luče na površinu), endokrine luče direktno u krv", "Nema razlike", "Egzokrine luče u krv, endokrine u kanal", "Obe luče hormone"],
+    "correct": 0,
+    "explanation": "Egzokrine (npr. znojne), Endokrine (npr. štitna)."
+  },
+  {
+    "question": "Šta je vezivno tkivo?",
+    "options": ["Tkivo sa puno međucelijske supstance koje povezuje i daje potporu drugim tkivima", "Samo mišići", "Samo kosti", "Samo epitel"],
+    "correct": 0,
+    "explanation": "Uključuje kosti, hrskavicu, masno tkivo, krv i rastresito/gusto vezivo."
+  },
+  {
+    "question": "Šta sintetišu fibroblasti?",
+    "options": ["Kolagen i druge komponente vanćelijskog matriksa", "Hormone", "Mijelin", "Znoj"],
+    "correct": 0,
+    "explanation": "Oni održavaju strukturni integritet vezivnog tkiva."
+  },
+  {
+    "question": "Koja je razlika između kolagenih i elastičnih vlakana?",
+    "options": ["Kolagena daju čvrstinu, elastična rastegljivost", "Nema razlike", "Kolagena su elastična, kolagena su čvrsta", "Elastična daju čvrstinu"],
+    "correct": 0,
+    "explanation": "Kolagen tipa I je najzastupljeniji."
+  },
+  {
+    "question": "Šta je hrskavica?",
+    "options": ["Specijalizovano vezivno tkivo sa hondrocitima u matriksu", "Kost", "Epitel", "Mišić"],
+    "correct": 0,
+    "explanation": "Hijaline hrskavice (zglobovi, traheja) su najčešće."
+  },
+  {
+    "question": "Šta je kost?",
+    "options": ["Mineralizovano vezivno tkivo sa osteocitima", "Hrskavica", "Mišić", "Nerv"],
+    "correct": 0,
+    "explanation": "Matriks kosti sadrži kalcijum-fosfat."
+  },
+  {
+    "question": "Koja je uloga osteoblasta?",
+    "options": ["Sinteza koštanog matriksa (stvaranje kosti)", "Razgradnja kosti", "Održavanje kosti", "Nema uloge"],
+    "correct": 0,
+    "explanation": "Oni su aktivni tokom rasta i popravke kostiju."
+  },
+  {
+    "question": "Koja je uloga osteoklasta?",
+    "options": ["Resorpcija (razgradnja) koštanog tkiva", "Stvaranje kostiju", "Sinteza kolagena", "Ništa"],
+    "correct": 0,
+    "explanation": "Važni za remodelovanje kostiju i nivo kalcijuma."
+  },
+  {
+    "question": "Šta su osteociti?",
+    "options": ["Zreli osteoblasti zarobljeni u koštanom matriksu", "Matične ćelije", "Osteoklasti", "Hrskavica"],
+    "correct": 0,
+    "explanation": "Oni održavaju integritet koštane supstance."
+  },
+  {
+    "question": "Koji su tipovi mišićnog tkiva?",
+    "options": ["Poprečno-prugasto (skeletno, srčano) i glatko", "Samo skeletno", "Samo srčano", "Samo glatko"],
+    "correct": 0,
+    "explanation": "Sva tri imaju kontraktilna vlakna (aktin, miozin)."
+  },
+  {
+    "question": "Šta je sarkomera?",
+    "options": ["Osnovna kontraktilna jedinica poprečno-prugastih mišića (od Z do Z linije)", "Deo kosti", "Ćelija bubrega", "Deo mozga"],
+    "correct": 0,
+    "explanation": "Skraćivanje sarkomera dovodi do kontrakcije mišića."
+  },
+  {
+    "question": "Koja je razlika između skeletnih i srčanih mišićnih ćelija?",
+    "options": ["Srčane imaju prelazne ploče (diskove) i granaju se", "Nema razlike", "Srčane su nepravilnog oblika", "Skeletne su mononuklearne"],
+    "correct": 0,
+    "explanation": "Prelazni diskovi omogućavaju sinhronu kontrakciju srca."
+  },
+  {
+    "question": "Gde se nalaze glatki mišići?",
+    "options": ["U zidovima šupljih organa (krvni sudovi, digestivni trakt)", "Samo u srcu", "Samo u skeletu", "Samo u koži"],
+    "correct": 0,
+    "explanation": "Njihova kontrakcija je spora i dugotrajna (nevoljna)."
+  },
+  {
+    "question": "Šta su krvni sudovi?",
+    "options": ["Arterije, vene i kapilari", "Samo srce", "Samo bubrezi", "Samo limfa"],
+    "correct": 0,
+    "explanation": "Trolokalna struktura (intima, medija, adventicija)."
+  },
+  {
+    "question": "Koja je razlika između arterija i vena?",
+    "options": ["Arterije imaju deblji mišićni zid (medija) i nose krv pod pritiskom", "Nema razlike", "Vene imaju deblji zid", "Arterije imaju zaliske"],
+    "correct": 0,
+    "explanation": "Vene imaju zaliske koji sprečavaju vraćanje krvi."
+  },
+  {
+    "question": "Šta su kapilari?",
+    "options": ["Najmanji sudovi gde se vrši razmena materija", "Velike arterije", "Vene", "Limfni sudovi"],
+    "correct": 0,
+    "explanation": "Zid im je građen od samo jednog sloja endotela."
+  },
+  {
+    "question": "Koja je funkcija limfnog sistema?",
+    "options": ["Drenaža tečnosti iz tkiva u krvotok, transport masti i imunski nadzor", "Samo varenje", "Samo disanje", "Samo kretanje"],
+    "correct": 0,
+    "explanation": "Limfni čvorovi su mesta gde se antigeni susreću sa imunskim ćelijama."
+  },
+  {
+    "question": "Šta su limfni čvorovi?",
+    "options": ["Organi koji filtriraju limfu i mesto imunskog odgovora", "Žlezde", "Kosti", "Krvni sudovi"],
+    "correct": 0,
+    "explanation": "Sadrže zone sa B i T limfocitima."
+  },
+  {
+    "question": "Šta je slezina (splen)?",
+    "options": ["Najveći limfoidni organ koji filtrira krv (uklanja stare eritrocite)", "Želudac", "Jetra", "Pankreas"],
+    "correct": 0,
+    "explanation": "Sadrži belu pulpu (imunski sistem) i crvenu pulpu (filtracija krvi)."
+  },
+  {
+    "question": "Šta je timus?",
+    "options": ["Primarni limfoidni organ gde sazrevaju T-limfociti", "Štitasta žlezda", "Pluća", "Srce"],
+    "correct": 0,
+    "explanation": "Najaktivniji je u detinjstvu, kasnije ga zamenjuje masno tkivo."
+  },
+  {
+    "question": "Šta su Hasalova telašca?",
+    "options": ["Strukture u timusu (degenerisane epitelne ćelije)", "Deo slezine", "Deo čvora", "Deo krvi"],
+    "correct": 0,
+    "explanation": "Služe kao histološki marker timusa."
+  },
+  {
+    "question": "Šta je hematopoeza?",
+    "options": ["Proces stvaranja krvnih ćelija u koštanoj srži", "Stvaranje kostiju", "Stvaranje neurona", "Varenje"],
+    "correct": 0,
+    "explanation": "Sve ćelije krvi potiču od pluripotentne matične ćelije."
+  },
+  {
+    "question": "Šta su eritrociti?",
+    "options": ["Crvena krvna zrnca za transport kiseonika", "Bela zrnca", "Trombociti", "Mišić"],
+    "correct": 0,
+    "explanation": "Nemaju jedro i prepuni su hemoglobina."
+  },
+  {
+    "question": "Šta su leukociti?",
+    "options": ["Bela krvna zrnca (imunski sistem)", "Eritrociti", "Pločice", "Masnoća"],
+    "correct": 0,
+    "explanation": "Uključuju neutrofile, limfocite, monocite, eozinofile, bazofile."
+  },
+  {
+    "question": "Šta su trombociti?",
+    "options": ["Krvne pločice za koagulaciju (zgrušavanje)", "Eritrociti", "Leukociti", "Nervi"],
+    "correct": 0,
+    "explanation": "Oni su fragmenti citoplazme megakariocita."
+  },
+  {
+    "question": "Koji organ je 'fabrika' svih krvnih ćelija kod odraslih?",
+    "options": ["Koštana srž", "Jetra", "Pankreas", "Slezina"],
+    "correct": 0,
+    "explanation": "Crvena srž se nalazi u sunđerastim kostima."
+  },
+  {
+    "question": "Šta je serum?",
+    "options": ["Plazma bez faktora koagulacije (fibrinogena)", "Krv bez ćelija", "Samo voda", "Samo šećer"],
+    "correct": 0,
+    "explanation": "Dobija se nakon zgrušavanja krvi."
+  },
+  {
+    "question": "Koja je glavna uloga albumina u krvi?",
+    "options": ["Održavanje koloidno-osmotskog pritiska i transport hormona/lekova", "Zgrušavanje", "Transport kiseonika", "Imunitet"],
+    "correct": 0,
+    "explanation": "To je najzastupljeniji protein u plazmi."
+  },
+  {
+    "question": "Šta su imunoglobulini (antitela)?",
+    "options": ["Proteini koje luče plazma ćelije (B-limfociti) za odbranu od antigena", "Enzimi", "Hormoni", "Masti"],
+    "correct": 0,
+    "explanation": "Specifično se vezuju za patogene."
+  },
+  {
+    "question": "Koja je funkcija neutrofila?",
+    "options": ["Fagocitoza bakterija (prva linija odbrane)", "Alergija", "Paraziti", "Hormoni"],
+    "correct": 0,
+    "explanation": "Najbrojniji su leukociti u krvi."
+  },
+  {
+    "question": "Koja je funkcija eozinofila?",
+    "options": ["Odbrana od parazita i kontrola alergijskih reakcija", "Fagocitoza bakterija", "Koagulacija", " Transport"],
+    "correct": 0,
+    "explanation": "Imaju krupne, eozinofilne granule."
+  },
+  {
+    "question": "Koja je funkcija bazofila?",
+    "options": ["Lučenje histamina i heparina u alergijskim reakcijama", "Fagocitoza", "Transport", "Stvaranje kostiju"],
+    "correct": 0,
+    "explanation": "Najređi su leukociti."
+  },
+  {
+    "question": "Šta su plazma ćelije?",
+    "options": ["Diferencirani B-limfociti koji luče veliku količinu antitela", "Eritrociti", "Mišić", "Kost"],
+    "correct": 0,
+    "explanation": "Imaju veoma razvijen rER."
+  },
+  {
+    "question": "Šta je sinapsa?",
+    "options": ["Mesto komunikacije između dva neurona ili neurona i efektorne ćelije", "Deo mišića", "Deo kosti", "Deo krvi"],
+    "correct": 0,
+    "explanation": "Signal prelazi preko sinaptičke pukotine uz pomoć neurotransmitera."
+  },
+  {
+    "question": "Šta je neurotransmiter?",
+    "options": ["Hemijski posrednik signala (npr. acetilholin, dopamin, glutamat)", "Enzim", "Hormon", "Protein"],
+    "correct": 0,
+    "explanation": "Oslobađa se iz presinaptičkog neurona."
+  },
+  {
+    "question": "Gde se nalaze Nisslova telašca kod motornih neurona kičmene moždine?",
+    "options": ["U telu (somi) neurona", "U aksonu", "U sinapsi", "Nigde"],
+    "correct": 0,
+    "explanation": "Jako su izražena jer motorni neuroni imaju velike aksone."
+  },
+  {
+    "question": "Koji deo mozga je deo limbičkog sistema (emocije i pamćenje)?",
+    "options": ["Hipokampus i amigdala", "Mali mozak", "Produžena moždina", "Sklera"],
+    "correct": 0,
+    "explanation": "Hipokampus je ključan za konsolidaciju pamćenja."
+  },
+  {
+    "question": "Šta je krvno-moždana barijera?",
+    "options": ["Sistem koji strogo kontroliše ulazak supstanci iz krvi u mozak", "Zid srca", "Koža", "Kosti"],
+    "correct": 0,
+    "explanation": "Štiti mozak od fluktuacija u sastavu krvi."
+  },
+  {
+    "question": "Šta znači da je nervni sistem plastičan?",
+    "options": ["Sposobnost mozga da menja strukturu i funkciju sinapsi na osnovu iskustva", "Nema plastičnosti", "Mozak je tvrd", "Starenje mozga"],
+    "correct": 0,
+    "explanation": "To je osnova učenja i oporavka nakon povreda."
+  },
+  {
+    "question": "Koji je najčešći ekscitatorni neurotransmiter u mozgu?",
+    "options": ["Glutamat", "GABA", "Serotonin", "Histamin"],
+    "correct": 0,
+    "explanation": "Glutamat je osnova za većinu funkcija mozga."
+  },
+  {
+    "question": "Koji je najčešći inhibitorni neurotransmiter u mozgu?",
+    "options": ["GABA (gama-aminobuterna kiselina)", "Glutamat", "Acetilholin", "Dopamin"],
+    "correct": 0,
+    "explanation": "GABA smiruje neurone."
+  },
+  {
+    "question": "Šta je Parkinsonova bolest?",
+    "options": ["Degeneracija dopaminergičkih neurona u substantia nigra", "Povreda kosti", "Infekcija pluća", "Dijabetes"],
+    "correct": 0,
+    "explanation": "Manifestuje se tremorom i rigiditetom."
+  },
+  {
+    "question": "Šta je Alchajmerova bolest?",
+    "options": ["Neurodegenerativno oboljenje sa plakovima i klupcima (proteini) u mozgu", "Zarazna bolest", "Povreda bubrega", "Bolest srca"],
+    "correct": 0,
+    "explanation": "Dovodi do gubitka pamćenja i demencije."
+  },
+  {
+    "question": "Šta se dešava tokom akcionog potencijala?",
+    "options": ["Nagla depolarizacija zbog ulaska Na+ u neuron", "Mir", "Izlazak K+", "Ulazak Cl-"],
+    "correct": 0,
+    "explanation": "Nakon toga sledi repolarizacija (izlazak K+)."
+  },
+  {
+    "question": "Kako se nervni impuls prenosi u mijelinizovanom aksonu?",
+    "options": ["Saltatornom kondukcijom (preskakanjem sa čvora na čvor)", "Kontinuirano", "Veoma sporo", "Ne prenosi se"],
+    "correct": 0,
+    "explanation": "To štedi energiju i ubrzava prenos."
+  },
+  {
+    "question": "Šta su proprioceptori?",
+    "options": ["Senzori u mišićima i zglobovima koji registruju položaj tela", "Senzori za vid", "Senzori za miris", "Senzori za ukus"],
+    "correct": 0,
+    "explanation": "Omogućavaju nam da znamo gde su nam udovi bez gledanja."
+  },
+  {
+    "question": "Šta je refleksi luk?",
+    "options": ["Najjednostavniji put nervnog impulsa (receptor-senzorni neuron-interneuron-motorni neuron-efektor)", "Složena misao", "Pamćenje", "Sazrevanje"],
+    "correct": 0,
+    "explanation": "Omogućava brzu reakciju bez učešća svesti."
+  },
+  {
+    "question": "Šta radi autonomni nervni sistem?",
+    "options": ["Reguliše nesvesne funkcije (rad srca, varenje, disanje)", "Kontroliše pisanje", "Kontroliše hodanje", "Ništa"],
+    "correct": 0,
+    "explanation": "Sastoji se iz simpatikusa i parasimpatikusa."
+  },
+  {
+    "question": "Šta radi simpatikus?",
+    "options": ["Priprema telo za 'bori se ili beži' (stres)", "Smanjuje srčani rad", "Podstiče varenje", "Opušta mišiće"],
+    "correct": 0,
+    "explanation": "Adrenalin je glavni posrednik."
+  },
+  {
+    "question": "Šta radi parasimpatikus?",
+    "options": ["Održava 'odmori i vari' (relaksacija i regeneracija)", "Ubrzava rad srca", "Podiže šećer", "Sprečava varenje"],
+    "correct": 0,
+    "explanation": "Acetilholin je glavni posrednik."
+  }
+];
+
+        let currentMode = '';
+        let currentQuestionIdx = 0;
+        let score = 0;
+        let hasAnswered = false;
+        let currentCardIdx = 0;
+        let cardLearnedCount = 0;
+
+        const homeScreen = document.getElementById('home-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const cardsScreen = document.getElementById('cards-screen');
+        const resultScreen = document.getElementById('result-screen');
+
+        function updateHomeScreenInfo() {
+            document.getElementById('database-info').innerText = `Učitano: ${database.length} histoloških pitanja i kartica`;
+        }
+        updateHomeScreenInfo();
+
+        function startModule(mode) {
+            homeScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            currentMode = mode;
+
+            if (mode === 'quiz') {
+                quizScreen.classList.remove('hidden');
+                currentQuestionIdx = 0;
+                score = 0;
+                loadQuestion();
+            } else if (mode === 'cards') {
+                cardsScreen.classList.remove('hidden');
+                currentCardIdx = 0;
+                cardLearnedCount = 0;
+                loadCard();
+            }
+        }
+
+        function loadQuestion() {
+            hasAnswered = false;
+            document.getElementById('btn-next-question').classList.add('hidden');
+            document.getElementById('explanation-placeholder').classList.add('hidden');
+
+            const qData = database[currentQuestionIdx];
+            document.getElementById('quiz-progress').innerText = `Pitanje ${currentQuestionIdx + 1} od ${database.length}`;
+            document.getElementById('quiz-score').innerText = `Poeni: ${score}`;
+            document.getElementById('question-placeholder').innerText = qData.question;
+
+            const optionsBox = document.getElementById('options-placeholder');
+            optionsBox.innerHTML = '';
+
+            const prefixes = ['A', 'B', 'V', 'G'];
+            qData.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="option-prefix">${prefixes[idx]}</span> ${opt}`;
+                btn.onclick = () => checkAnswer(idx, btn);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx, clickedBtn) {
+            if (hasAnswered) return;
+            hasAnswered = true;
+
+            const qData = database[currentQuestionIdx];
+            const optionsBox = document.getElementById('options-placeholder');
+            const buttons = optionsBox.getElementsByClassName('option-btn');
+
+            if (selectedIdx === qData.correct) {
+                clickedBtn.classList.add('correct');
+                score += 10;
+            } else {
+                clickedBtn.classList.add('wrong');
+                if (buttons[qData.correct]) {
+                    buttons[qData.correct].classList.add('correct');
+                }
+            }
+
+            document.getElementById('quiz-score').innerText = `Poeni: ${score}`;
+            document.getElementById('explanation-text').innerText = qData.explanation;
+            document.getElementById('explanation-placeholder').classList.remove('hidden');
+            document.getElementById('btn-next-question').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestionIdx++;
+            if (currentQuestionIdx < database.length) {
+                loadQuestion();
+            } else {
+                showResults(`Završili ste Slagalica kviz!`, `Osvojeni poeni: ${score} od maksimalnih ${database.length * 10}`);
+            }
+        }
+
+        function loadCard() {
+            const cardElement = document.getElementById('main-card');
+            cardElement.classList.remove('flipped');
+            document.getElementById('card-controls-box').classList.add('hidden');
+
+            const qData = database[currentCardIdx];
+            document.getElementById('cards-progress').innerText = `Kartica ${currentCardIdx + 1} od ${database.length}`;
+            document.getElementById('cards-learned').innerText = `Naučeno: ${cardLearnedCount}`;
+            document.getElementById('card-front-text').innerText = qData.question;
+            
+            const prefixes = ['A', 'B', 'V', 'G'];
+            const labelTacno = prefixes[qData.correct];
+            const tekstTacno = qData.options[qData.correct];
+            document.getElementById('card-back-text').innerHTML = `<strong>Tačan odgovor: ${labelTacno}) ${tekstTacno}</strong><br><br><span style="font-size:1.1rem; color:#bdc3c7;">${qData.explanation}</span>`;
+        }
+
+        function flipCard() {
+            const cardElement = document.getElementById('main-card');
+            cardElement.classList.toggle('flipped');
+            
+            if (cardElement.classList.contains('flipped')) {
+                document.getElementById('card-controls-box').classList.remove('hidden');
+            } else {
+                document.getElementById('card-controls-box').classList.add('hidden');
+            }
+        }
+
+        function handleCardStatus(isLearned) {
+            if (isLearned) cardLearnedCount++;
+            currentCardIdx++;
+            if (currentCardIdx < database.length) {
+                loadCard();
+            } else {
+                showResults(`Završili ste fleškartice!`, `Naučeno: ${cardLearnedCount} od ukupno ${database.length} koncepata.`);
+            }
+        }
+
+        function showResults(title, message) {
+            quizScreen.classList.add('hidden');
+            cardsScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            resultScreen.querySelector('h1').innerText = title;
+            document.getElementById('result-message').innerText = message;
+            
+            let procenat = (currentMode === 'quiz') ? Math.round((score / (database.length * 10)) * 100) : Math.round((cardLearnedCount / database.length) * 100);
+            document.getElementById('final-score-text').innerText = `Uspeh: ${procenat}%`;
+        }
+
+        function exitToHome() {
+            quizScreen.classList.add('hidden');
+            cardsScreen.classList.add('hidden');
+            resultScreen.classList.add('hidden');
+            homeScreen.classList.remove('hidden');
+        }
+
+        function toggleImportArea() {
+            document.getElementById('import-area').classList.toggle('hidden');
+        }
+
+        function importQuestions() {
+            const input = document.getElementById('json-input').value;
+            try {
+                const parsed = JSON.parse(input);
+                if (Array.isArray(parsed)) {
+                    database = database.concat(parsed);
+                    updateHomeScreenInfo();
+                    alert(`Uspješno uvezeno još ${parsed.length} pitanja! Ukupno u bazi: ${database.length}`);
+                    document.getElementById('json-input').value = '';
+                    toggleImportArea();
+                } else {
+                    alert('Greška: Podaci moraju biti u obliku niza [ {...}, {...} ]');
+                }
+            } catch (e) {
+                alert('Greška pri parsiranju JSON koda. Proverite zagrade i zareze.');
+            }
+        }
+    </script>
+</body>
+</html>
